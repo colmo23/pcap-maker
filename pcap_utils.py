@@ -23,4 +23,5 @@ def get_tcp_stack(tcp_data, src_ip = "\x0a\x0a\x0a\x0a", dest_ip = "\x0a\x0a\x0a
 
 if __name__ == '__main__':
     http = get_tcp_stack(tcp_data = "GET /\r\n\r\n\r\n")
-    import pdb;pdb.set_trace()
+    print("generated http request: %s" % repr(http))
+    print("raw: %s" % (repr(str(http))))
