@@ -1,4 +1,6 @@
 import dpkt
+import io
+
 
 
 def get_tcp_stack(tcp_data, src_ip = "\x0a\x0a\x0a\x0a", dest_ip = "\x0a\x0a\x0a\x10", tcp_src_port = 1000, tcp_dest_port = 80):
@@ -19,9 +21,21 @@ def get_tcp_stack(tcp_data, src_ip = "\x0a\x0a\x0a\x0a", dest_ip = "\x0a\x0a\x0a
     return eth_part
 
 
+def make_pcap(pkt):
+    fh = io.BytesIO()
+    pcap_writer = dpkt.pcap.Writer(fh)
+    pcap_writer.writepkt(pkt)
+    return fh.getvalue()
+
 
 
 if __name__ == '__main__':
     http = get_tcp_stack(tcp_data = "GET /\r\n\r\n\r\n")
     print("generated http request: %s" % repr(http))
     print("raw: %s" % (repr(str(http))))
+    pcap_str = make_pcap(http)
+    print("raw pcap: %s" % (repr(str(pcap_str))))
+    fh = open("xx.pcap", "wb")
+    fh.write(str(pcap_str))
+    fh.close()
+
