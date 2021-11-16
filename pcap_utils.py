@@ -21,6 +21,42 @@ def get_tcp_stack(tcp_data, src_ip = "\x0a\x0a\x0a\x0a", dest_ip = "\x0a\x0a\x0a
     return eth_part
 
 
+def get_udp_stack(data, src_ip = "\x0a\x0a\x0a\x0a", dest_ip = "\x0a\x0a\x0a\x10", src_port = 1000, dest_port = 80):
+
+    l3_part = dpkt.udp.UDP(sport = src_port, dport = dest_port, ulen = 8 + len(data), data = data)
+    
+    ip_part = dpkt.ip.IP(
+                         src = src_ip,
+                         dst = dest_ip,
+                         p = dpkt.ip.IP_PROTO_UDP,
+                         len = 20 + len(str(l3_part)),
+                         data = l3_part)
+
+    eth_part = dpkt.ethernet.Ethernet(
+#                                     src = eth_pkt.dst,
+#                                     dst = eth_pkt.src,
+                                      data = ip_part)
+    return eth_part
+
+def get_sctp_stack(data, src_ip = "\x0a\x0a\x0a\x0a", dest_ip = "\x0a\x0a\x0a\x10", src_port = 2905, dest_port = 2905):
+
+    l3_part = dpkt.sctp.SCTP(sport = src_port, dport = dest_port)
+    l3_part.data = data
+    
+    ip_part = dpkt.ip.IP(
+                         src = src_ip,
+                         dst = dest_ip,
+                         p = dpkt.ip.IP_PROTO_SCTP,
+                         len = 20 + len(str(l3_part)),
+                         data = l3_part)
+
+    eth_part = dpkt.ethernet.Ethernet(
+#                                     src = eth_pkt.dst,
+#                                     dst = eth_pkt.src,
+                                      data = ip_part)
+    return eth_part
+
+
 def make_pcap(pkt):
     fh = io.BytesIO()
     pcap_writer = dpkt.pcap.Writer(fh)
