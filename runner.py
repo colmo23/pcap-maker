@@ -37,7 +37,7 @@ def do_tcp_pcap():
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
     
-    return str(pcap_obj)
+    return bytes(pcap_obj)
 
 @get('/udp') 
 def get_udp_network_info():
@@ -65,7 +65,7 @@ def do_udp_pcap():
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
     
-    return str(pcap_obj)
+    return bytes(pcap_obj)
 
 @get('/sctp') 
 def get_sctp_network_info():
@@ -80,6 +80,7 @@ def get_sctp_network_info():
         <p>sample:</p>
         </br>
         <p>M3UA DATA (use dest port of 2905):</p>
+        <p>010001010000005400020049c583af405bd5000100a0010a02020705819084190f0a070317933393798008018003057c038890a61d038890a6310200643f06039300060010f4056476c328813902f49000000000</p>
         <p>010001010000005400020049c583af405bd5000100a0010a02020705819084190f0a070317933393798008018003057c038890a61d038890a6310200643f06039300060010f4056476c328813902f49000000000</p>
     '''
 
@@ -96,6 +97,6 @@ def do_sctp_pcap():
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
     
-    return str(pcap_obj)
+    return bytes(pcap_obj)
 
 run(host='localhost', port=8080, debug=True)
