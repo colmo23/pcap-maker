@@ -68,6 +68,22 @@ def get_sctp_stack(data, src_ip = b"\x0a\x0a\x0a\x0a", dest_ip = b"\x0a\x0a\x0a\
                                       data = ip_part)
     return eth_part
 
+def get_ip_stack(data, protocol = 99):
+
+    ip_part = dpkt.ip.IP(
+                         src = b'\x0a\x0a\x0a\x0a',
+                         dst = b'\x0a\x0a\x0b\x0b',
+                         p = protocol,
+                         len = 20 + len(data),
+                         data = data)
+
+    eth_part = dpkt.ethernet.Ethernet(
+#                                     src = eth_pkt.dst,
+#                                     dst = eth_pkt.src,
+                                      data = ip_part)
+    return eth_part
+
+
 
 def make_pcap(pkt):
     fh = io.BytesIO()

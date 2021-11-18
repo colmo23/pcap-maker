@@ -8,6 +8,7 @@ def all():
         <a href="/tcp">TCP</a>
         <a href="/udp">UDP</a>
         <a href="/sctp">SCTP</a>
+        <a href="/ip">IP</a>
     '''
       
 
@@ -93,6 +94,34 @@ def do_sctp_pcap():
     hexvalue = request.forms.get('sctphex')
     data = binascii.a2b_hex(hexvalue)
     pkt = pcap_utils.get_sctp_stack(data = data, src_port = sport, dest_port = dport)
+    pcap_obj = pcap_utils.make_pcap(pkt)
+    response.content_type = 'application/cap'
+    response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
+    
+    return bytes(pcap_obj)
+
+@get('/ip') 
+def get_ip_network_info():
+    return '''
+        <form action="/ip" method="post">
+            protocol: <input name="protocol" type="text" value="132" type="number" min="0" step="1" max="65535"/>
+            IP payload hex data: <input name="iphex" type="textarea" />
+            <input value="Generate PCAP" type="submit" />
+        </form>
+
+        <p>sample:</p>
+        </br>
+        <p>SCTP/M3UA DATA (use protocol of 132):</p>
+        <p>189f0b5add68d33d40ed9bde00030018d42b489200000000000000030100030400000008</p>
+    '''
+
+@post('/ip')
+def do_ip_pcap():
+    protocol = request.forms.get('protocol')
+    protocol = int(protocol)
+    hexvalue = request.forms.get('iphex')
+    data = binascii.a2b_hex(hexvalue)
+    pkt = pcap_utils.get_ip_stack(data = data, protocol = protocol)
     pcap_obj = pcap_utils.make_pcap(pkt)
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
