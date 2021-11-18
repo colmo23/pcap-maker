@@ -9,6 +9,7 @@ def all():
         <a href="/udp">UDP</a>
         <a href="/sctp">SCTP</a>
         <a href="/ip">IP</a>
+        <a href="/full">Full protocol stack</a>
     '''
       
 
@@ -126,6 +127,30 @@ def do_ip_pcap():
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
     
+    return bytes(pcap_obj)
+
+
+@get('/full') 
+def get_full_network_info():
+    return '''
+        <form action="/full" method="post">
+            Full stack hex data: <input name="fullhex" type="textarea" />
+            <input value="Generate PCAP" type="submit" />
+        </form>
+
+        <p>sample:</p>
+        </br>
+        <p>ethernet.io.sctp.m3ua</p>
+        <p>00005096523a0026cb39f4c0080045000068da010000fa844c7e585206860aad300d189f0b5add68d33d40ed9bde00030018d42b48920000000000000003010003040000000800030030d42b489300000001000000030100000100000020000d000800010002001100080000000d0006000800000456</p>
+    '''
+
+@post('/full')
+def do_full_pcap():
+    hexvalue = request.forms.get('fullhex')
+    data = binascii.a2b_hex(hexvalue)
+    pcap_obj = pcap_utils.make_pcap(data)
+    response.content_type = 'application/cap'
+    response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
     return bytes(pcap_obj)
 
 run(host='localhost', port=8080, debug=True)
