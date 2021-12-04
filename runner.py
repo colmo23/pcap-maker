@@ -75,6 +75,7 @@ def get_sctp_network_info():
         <form action="/sctp" method="post">
             source port: <input name="sport" type="text" value="2905" type="number" min="0" step="1" max="65535"/>
             dest port: <input name="dport" type="text" value="2905" type="number" min="0" step="1" max="65535"/>
+            protocol id (M3uA=3,M2UA=2): <input name="protocol" type="text" value="3" type="number" min="0" step="1" max="65535"/>
             SCTP hex data: <input name="sctphex" type="textarea" />
             <input value="Generate PCAP" type="submit" />
         </form>
@@ -83,7 +84,10 @@ def get_sctp_network_info():
         </br>
         <p>M3UA DATA (use dest port of 2905):</p>
         <p>010001010000005400020049c583af405bd5000100a0010a02020705819084190f0a070317933393798008018003057c038890a61d038890a6310200643f06039300060010f4056476c328813902f49000000000</p>
-        <p>010001010000005400020049c583af405bd5000100a0010a02020705819084190f0a070317933393798008018003057c038890a61d038890a6310200643f06039300060010f4056476c328813902f49000000000</p>
+        <p>m3ua/sccp/tcap end/error</p>
+        <p>010001010000007c021000720000231f000023010302000d0981030e190b12070011048367550010050b120600110483760000410141643f4904a68edb6f6b2a2828060700118605010101a01d611b80020780a109060704000001000103a203020100a305a1030201006c0ba3090201000201240a01000a01010000</p>
+        <p>m2pa/sccp/tcap/ussd (use protocol of 2)</p>
+        <p>010006010000009c0300009283286204210900030d180a129300110472281906000b12060011047228196041066c626a48042f3b46026b3a2838060700118605010101a02d602b80020780a109060704000001001302be1a2818060704000001010101a00da00b80099656051124006913f66c26a12402010102013b301c04010f040eaa180da682dd6c31192d36bbdd468007917267415827f20000</p>
     '''
 
 @post('/sctp')
@@ -92,9 +96,11 @@ def do_sctp_pcap():
     sport = int(sport)
     dport = request.forms.get('dport')
     dport = int(dport)
+    protocol = request.forms.get('protocol')
+    protocol = int(protocol)
     hexvalue = request.forms.get('sctphex')
     data = binascii.a2b_hex(hexvalue)
-    pkt = pcap_utils.get_sctp_stack(data = data, src_port = sport, dest_port = dport)
+    pkt = pcap_utils.get_sctp_stack(data = data, src_port = sport, dest_port = dport, protocol = protocol)
     pcap_obj = pcap_utils.make_pcap(pkt)
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')

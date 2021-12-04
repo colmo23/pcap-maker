@@ -1,6 +1,7 @@
 import binascii
 import dpkt
 import io
+import struct
 
 
 
@@ -39,18 +40,22 @@ def get_udp_stack(data, src_ip = b"\x0a\x0a\x0a\x0a", dest_ip = b"\x0a\x0a\x0a\x
                                       data = ip_part)
     return eth_part
 
-def get_sctp_stack(data, src_ip = b"\x0a\x0a\x0a\x0a", dest_ip = b"\x0a\x0a\x0a\x10", src_port = 2905, dest_port = 2905):
+def get_sctp_stack(data, src_ip = b"\x0a\x0a\x0a\x0a", dest_ip = b"\x0a\x0a\x0a\x10", src_port = 2905, dest_port = 2905, protocol = 3):
 
     data_chunk = dpkt.sctp.Chunk(type = dpkt.sctp.DATA)
     chunk_tsn = b"\x00\x10\x20\x30"
     chunk_stream_id = b"\x00\x80"
-    chunk_protocol_id = b"\x00\x00\x00\x03"
+    chunk_protocol_id = struct.pack("!i",protocol)
     chunk_seq = b"\x00\x2a"
-    padding = b'\x00\x00\x00'
-    data_chunk.data = chunk_tsn + chunk_stream_id + chunk_seq + chunk_protocol_id + bytes(data) + padding
-    data_chunk.len = len(data_chunk.data)
+
+
+    data_chunk.data = chunk_tsn + chunk_stream_id + chunk_seq + chunk_protocol_id + bytes(data) 
+
+    padding_len = 4 - (len(data_chunk.data) % 4)
+    data_chunk.padding = b'\x00' * padding_len
+    data_chunk.len = len(data_chunk.data) + padding_len
+
     data_chunk.flags = 0x03
-    data_chunk.padding = b''
     l3_part = dpkt.sctp.SCTP(sport = src_port, dport = dest_port)
     l3_part.chunks = [data_chunk]
     
