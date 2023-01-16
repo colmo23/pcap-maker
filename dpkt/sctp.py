@@ -96,6 +96,35 @@ class Chunk(dpkt.Packet):
     def __bytes__(self):
         return self.pack_hdr() + bytes(self.data) + self.padding
 
+class ChunkData(dpkt.Packet):
+    __hdr__ = (
+        ('type', 'B', DATA),
+        ('flags', 'B', 0),
+        ('len', 'H', 0),
+        ('tsn', 'I', 0),
+        ('stream_id', 'H', 0),
+        ('stream_seq_num', 'H', 0)
+    )
+
+    def unpack(self, buf):
+        dpkt.Packet.unpack(self, buf)
+
+        self.data = self.data[:self.len - self.__hdr_len__]
+        self.padding = b''  # optional padding for DATA chunks
+
+        # SCTP DATA Chunked is padded, 4-bytes aligned
+        if self.type == DATA and self.len % 4:
+            plen = 4 - self.len % 4  # padded length
+            if plen:
+                pos = self.__hdr_len__ + len(self.data)  # end of data in buf
+                self.padding = buf[pos:pos + plen]
+
+    def __len__(self):
+        return self.len + len(self.padding)
+
+    def __bytes__(self):
+        return self.pack_hdr() + bytes(self.data) + self.padding
+
 
 __s = (b'\x80\x44\x00\x50\x00\x00\x00\x00\x30\xba\xef\x54\x01\x00\x00\x3c\x3b\xb9\x9c\x46\x00\x01'
        b'\xa0\x00\x00\x0a\xff\xff\x2b\x2d\x7e\xb2\x00\x05\x00\x08\x9b\xe6\x18\x9b\x00\x05\x00\x08'

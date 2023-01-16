@@ -52,7 +52,8 @@ def get_sctp_stack(data, src_ip = b"\x0a\x0a\x0a\x0a", dest_ip = b"\x0a\x0a\x0a\
     data_chunk.data = chunk_tsn + chunk_stream_id + chunk_seq + chunk_protocol_id + bytes(data) 
 
     padding_len = 4 - (len(data_chunk.data) % 4)
-    data_chunk.padding = b'\x00' * padding_len
+    #data_chunk.padding = b'\x00' * padding_len
+    data_chunk.padding = b''
     data_chunk.len = len(data_chunk.data) + padding_len
 
     data_chunk.flags = 0x03
