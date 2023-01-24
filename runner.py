@@ -1,25 +1,32 @@
 from bottle import route, run, get, post, request, redirect, response
 import binascii
 import pcap_utils
+import html_pieces
 
-@route('/')
-def all():
-    return '''
+TOP_LINKS = ''' 
         <a href="/tcp">TCP</a>
         <a href="/udp">UDP</a>
         <a href="/sctp">SCTP</a>
         <a href="/ip">IP</a>
         <a href="/full">Full protocol stack</a>
+        <a href="/test">Test page</a>
+        <br/>
     '''
+
+
+
+@route('/')
+def all():
+    return TOP_LINKS
       
 
 
 @get('/tcp') 
 def get_tcp_network_info():
-    return '''
+    return TOP_LINKS + '''
         <form action="/tcp" method="post">
-            dest port: <input name="dport" type="text" value="80" type="number" min="0" step="1" max="65535"/>
-            tcp hex data: <input name="tcphex" type="textarea" />
+            dest port: <input name="dport" type="text" value="80" type="number" min="0" step="1" max="65535" size="5"/>
+            tcp hex data: <textarea name="tcphex" type="textarea" rows="4" cols="80"></textarea>
             <input value="Generate PCAP" type="submit" />
         </form>
 
@@ -43,7 +50,7 @@ def do_tcp_pcap():
 
 @get('/udp') 
 def get_udp_network_info():
-    return '''
+    return TOP_LINKS + '''
         <form action="/udp" method="post">
             dest port: <input name="dport" type="text" value="161" type="number" min="0" step="1" max="65535"/>
             tcp hex data: <input name="udphex" type="textarea" />
@@ -71,7 +78,7 @@ def do_udp_pcap():
 
 @get('/sctp') 
 def get_sctp_network_info():
-    return '''
+    return TOP_LINKS + '''
         <form action="/sctp" method="post">
             source port: <input name="sport" type="text" value="2905" type="number" min="0" step="1" max="65535"/>
             dest port: <input name="dport" type="text" value="2905" type="number" min="0" step="1" max="65535"/>
@@ -109,7 +116,7 @@ def do_sctp_pcap():
 
 @get('/ip') 
 def get_ip_network_info():
-    return '''
+    return TOP_LINKS + '''
         <form action="/ip" method="post">
             protocol: <input name="protocol" type="text" value="132" type="number" min="0" step="1" max="65535"/>
             IP payload hex data: <input name="iphex" type="textarea" />
@@ -138,7 +145,7 @@ def do_ip_pcap():
 
 @get('/full') 
 def get_full_network_info():
-    return '''
+    return TOP_LINKS + '''
         <form action="/full" method="post">
             Full stack hex data: <input name="fullhex" type="textarea" />
             <input value="Generate PCAP" type="submit" />
@@ -157,6 +164,29 @@ def do_full_pcap():
     pcap_obj = pcap_utils.make_pcap(data)
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
+    return bytes(pcap_obj)
+
+
+
+
+@get('/test') 
+def get_test_network_info():
+    header = html_pieces.HEADER
+    form = html_pieces.FORM
+    body = "<body>%s</body></hrml>" % form
+    return header + body
+
+@post('/test')
+def do_tcp_pcap():
+    dport = request.forms.get('dport')
+    dport = int(dport)
+    tcp_hex = request.forms.get('tcphex')
+    tcp_data = binascii.a2b_hex(tcp_hex)
+    pkt = pcap_utils.get_tcp_stack(tcp_data = tcp_data, tcp_dest_port = dport)
+    pcap_obj = pcap_utils.make_pcap(pkt)
+    response.content_type = 'application/cap'
+    response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
+    
     return bytes(pcap_obj)
 
 run(host='localhost', port=8080, debug=True)
