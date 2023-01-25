@@ -58,6 +58,16 @@ input[type=submit]:hover {
   display: table;
   clear: both;
 }
+.header_links {
+  border-radius: 5px;
+  background-color: #90EE90;
+  padding: 10px;
+}
+.col-20 {
+  float: left;
+  width: 20%;
+  margin-top: 6px;
+}
 
 /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
@@ -80,12 +90,28 @@ HEADER = '''<!DOCTYPE html>
 </head> ''' % CSS
 
 TOP_LINKS = '''
+ <div class="header_links">
+   <div class="row">
+    <div class="col-20">
         <a href="/tcp">TCP</a>
+    </div>
+    <div class="col-20">
         <a href="/udp">UDP</a>
+   </div>
+    <div class="col-20">
         <a href="/sctp">SCTP</a>
+    </div>
+    <div class="col-20">
         <a href="/ip">IP</a>
+    </div>
+    <div class="col-20">
         <a href="/full">Full protocol stack</a>
+    </div>
+   </div>
+  </div>
         <br/>
+<br/>
+<br/>
     '''
 
 
