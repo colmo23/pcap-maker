@@ -10,7 +10,7 @@ import html_pieces
 def all():
     header = html_pieces.HEADER
     form = html_pieces.FORM_TCP
-    body = "<body>%s</body></hrml>" % (html_pieces.TOP_LINKS)
+    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, html_pieces.INFO)
     return header + body
       
 
@@ -114,10 +114,12 @@ def get_full_network_info():
 
 @post('/full')
 def do_full_pcap():
+    linktype = request.forms.get('linktype')
+    linktype = int(linktype)
     hexvalue = request.forms.get('fullhex')
     hexvalue = pcap_utils.cleanup_hex(hexvalue)
     data = binascii.a2b_hex(hexvalue)
-    pcap_obj = pcap_utils.make_pcap(data)
+    pcap_obj = pcap_utils.make_pcap(data, linktype = linktype)
     response.content_type = 'application/cap'
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
     return bytes(pcap_obj)

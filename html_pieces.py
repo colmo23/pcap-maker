@@ -43,13 +43,16 @@ input[type=submit]:hover {
 .col-25 {
   float: left;
   width: 25%;
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
 .col-75 {
   float: left;
   width: 75%;
-  margin-top: 6px;
+  margin-top: 10px;
+}
+.info {
+  text-align: center;
 }
 
 /* Clear floats after the columns */
@@ -114,6 +117,18 @@ TOP_LINKS = '''
 <br/>
     '''
 
+INFO = '''
+<div class="container">
+<div class="info">
+This site takes hex dumps of network messages and generates a pcap file.
+</div>
+</div>
+<div class="container">
+<div class="info">
+A pcap file can be viewed via the Wireshark desktop application, see <a href="https://www.wireshark.org/">www.wireshark.org</a>
+</div>
+</div>
+'''
 
 
 FORM_TCP = '''
@@ -233,7 +248,7 @@ FORM_SCTP = '''
   </div>  
  <div class="row">
     <div class="col-25">
-      <label for="pid">Protocol Id (3 means M3UA, 2 means M2PA)</label>
+      <label for="pid">Protocol Id (3 means M3UA, 2 means M2UA)</label>
     </div>
     <div class="col-75">
       <input type="text" id="pid" name="protocol" value="3" type="number" min="0" step="1" max="65535" size="5">
@@ -279,11 +294,31 @@ FORM_SCTP = '''
   </div>
   <div class="row">
     <div class="col-25">
-      m2pa/sccp/tcap/ussd (use protocol of 2)
+      M2UA/SCCP/TCAP/USSD (use protocol of 2)
     </div>
     <div class="col-75">
       <div class="wrapdiv">
          010006010000009c0300009283286204210900030d180a129300110472281906000b12060011047228196041066c626a48042f3b46026b3a2838060700118605010101a02d602b80020780a109060704000001001302be1a2818060704000001010101a00da00b80099656051124006913f66c26a12402010102013b301c04010f040eaa180da682dd6c31192d36bbdd468007917267415827f20000
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-25">
+      M2UA/MTP3/SCCP/ANSI TCAP/SMS Delivery Point to Point (OTA) (use protocol of 2)
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         0100060100000060000100080000003e0300004e830a800400090003070b04430a0008044312000c35e233c70400000000e82be929cf0100d1020935f2209f69009f74009f81000108880516193204009f814101019f81430522222222220000
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-25">
+      M2UA/MTP3/SCCP/TCAP/Camel Initial DP Arg (use protocol of 2)
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         01000601000000cc030000c1833001e8430981030d170a129200120422705700400a129200120422705700709c6281994804070004006b1a2818060700118605010101a00d600ba1090607040000010032016c75a173020101020100306b80016e8208839021721090000f830303975785010a8c06831407010900bb0580038090a39c01029d068314070109009e0203619f320806079209100491f9bf35038301119f360513fa3d3dea9f37069122705700709f39080250114231016500bf3b088106912270570070000000
       </div>
     </div>
   </div>
@@ -335,6 +370,14 @@ FORM_IP = '''
 FORM_FULL = '''
 <div class="container">
   <form action="/full" method="post">
+ <div class="row">
+    <div class="col-25">
+      <label for="ltype">Link Type</label>
+    </div>
+    <div class="col-75">
+      <input type="text" id="ltype" name="linktype" value="1" type="number" min="0" step="1" max="255" size="3">
+    </div>
+  </div>  
   <div class="row">
     <div class="col-25">
       <label for="tcphex">Full hex payload</label>
@@ -355,11 +398,31 @@ FORM_FULL = '''
 <div class="container">
   <div class="row">
     <div class="col-25">
-      ethernet.io.sctp.m3ua
+      Ethernet/io/sctp/m3ua <br/>(use linktype of 1)
     </div>
     <div class="col-75">
       <div class="wrapdiv">
          00005096523a0026cb39f4c0080045000068da010000fa844c7e585206860aad300d189f0b5add68d33d40ed9bde00030018d42b48920000000000000003010003040000000800030030d42b489300000001000000030100000100000020000d000800010002001100080000000d0006000800000456
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-25">
+      MTP3/SCCP/BSSAP/GSM  <br/>(use linktype of 141)
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         03443322db0693150300011f01001c03c504066004020005815e0581020055207e090005060027004004f1
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-25">
+      MTP2/MTP3/ISUP IAM  <br/> (use linktype of 140)
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         1d1d2085024000900e00011100000a03020907039040380982990a06031317734508007989
       </div>
     </div>
   </div>

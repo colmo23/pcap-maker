@@ -96,9 +96,9 @@ def get_ip_stack(data, protocol = 99):
 
 
 
-def make_pcap(pkt):
+def make_pcap(pkt, linktype = dpkt.pcap.DLT_EN10MB):
     fh = io.BytesIO()
-    pcap_writer = dpkt.pcap.Writer(fh)
+    pcap_writer = dpkt.pcap.Writer(fh, linktype = linktype)
     pcap_writer.writepkt(pkt)
     return fh.getvalue()
 
