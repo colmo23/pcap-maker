@@ -27,6 +27,8 @@ def do_tcp_pcap():
     dport = request.forms.get('dport')
     dport = int(dport)
     tcp_hex = request.forms.get('tcphex')
+    tcp_hex = pcap_utils.cleanup_hex(tcp_hex)
+
     tcp_data = binascii.a2b_hex(tcp_hex)
     pkt = pcap_utils.get_tcp_stack(tcp_data = tcp_data, tcp_dest_port = dport)
     pcap_obj = pcap_utils.make_pcap(pkt)
@@ -47,6 +49,7 @@ def do_udp_pcap():
     dport = request.forms.get('dport')
     dport = int(dport)
     hexvalue = request.forms.get('udphex')
+    hexvalue = pcap_utils.cleanup_hex(hexvalue)
     data = binascii.a2b_hex(hexvalue)
     pkt = pcap_utils.get_udp_stack(data = data, dest_port = dport)
     pcap_obj = pcap_utils.make_pcap(pkt)
@@ -71,6 +74,7 @@ def do_sctp_pcap():
     protocol = request.forms.get('protocol')
     protocol = int(protocol)
     hexvalue = request.forms.get('sctphex')
+    hexvalue = pcap_utils.cleanup_hex(hexvalue)
     data = binascii.a2b_hex(hexvalue)
     pkt = pcap_utils.get_sctp_stack(data = data, src_port = sport, dest_port = dport, protocol = protocol)
     pcap_obj = pcap_utils.make_pcap(pkt)
@@ -91,6 +95,7 @@ def do_ip_pcap():
     protocol = request.forms.get('protocol')
     protocol = int(protocol)
     hexvalue = request.forms.get('iphex')
+    hexvalue = pcap_utils.cleanup_hex(hexvalue)
     data = binascii.a2b_hex(hexvalue)
     pkt = pcap_utils.get_ip_stack(data = data, protocol = protocol)
     pcap_obj = pcap_utils.make_pcap(pkt)
@@ -110,6 +115,7 @@ def get_full_network_info():
 @post('/full')
 def do_full_pcap():
     hexvalue = request.forms.get('fullhex')
+    hexvalue = pcap_utils.cleanup_hex(hexvalue)
     data = binascii.a2b_hex(hexvalue)
     pcap_obj = pcap_utils.make_pcap(data)
     response.content_type = 'application/cap'

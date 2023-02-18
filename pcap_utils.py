@@ -3,6 +3,11 @@ import dpkt
 import io
 import struct
 
+def cleanup_hex(hex_string):
+    hex_string = "".join(hex_string.split("\r\n"))
+    hex_string = "".join(hex_string.split("\n"))
+    hex_string = "".join(hex_string.split(" "))
+    return hex_string
 
 
 def get_tcp_stack(tcp_data, src_ip = b"\x0a\x0a\x0a\x0a", dest_ip = b"\x0a\x0a\x0a\x10", tcp_src_port = 1000, tcp_dest_port = 80):
