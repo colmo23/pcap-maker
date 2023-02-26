@@ -102,7 +102,20 @@ def make_pcap(pkt, linktype = dpkt.pcap.DLT_EN10MB):
     pcap_writer.writepkt(pkt)
     return fh.getvalue()
 
+def test_ip():
+    response = get_ip_stack(b'1234567')
+    assert response.data.data == b'1234567'
 
+def test_sctp():
+    response = get_sctp_stack(b'1234')
+    assert response.data.data[-4:] == b'1234'
+
+def test_udp():
+    response = get_udp_stack(data = b'123')
+    assert response.data.data.data == b'123'
+def test_tcp():
+    response = get_tcp_stack(tcp_data = b'12345678')
+    assert response.data.data.data == b'12345678'
 
 if __name__ == '__main__':
     http = get_tcp_stack(tcp_data = b"GET /\r\n\r\n\r\n")
