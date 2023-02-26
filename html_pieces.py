@@ -1,7 +1,6 @@
 import bottle
 
 
-
 CSS = '''
 * {
   box-sizing: border-box;
@@ -141,7 +140,7 @@ FORM_TCP = '''
     <div class="col-75">
       <input type="text" id="dport" name="dport" value="80" type="number" min="0" step="1" max="65535" size="5">
     </div>
-  </div>  
+  </div>
   <div class="row">
     <div class="col-25">
       <label for="tcphex">TCP hext payload</label>
@@ -172,7 +171,7 @@ FORM_TCP = '''
   </div>
 </div>
 '''
- 
+
 
 FORM_UDP = '''
 <div class="container">
@@ -184,7 +183,7 @@ FORM_UDP = '''
     <div class="col-75">
       <input type="text" id="dport" name="dport" value="161" type="number" min="0" step="1" max="65535" size="5">
     </div>
-  </div>  
+  </div>
   <div class="row">
     <div class="col-25">
       <label for="tcphex">UDP hex payload</label>
@@ -237,7 +236,7 @@ FORM_SCTP = '''
     <div class="col-75">
       <input type="text" id="sport" name="sport" value="2905" type="number" min="0" step="1" max="65535" size="5">
     </div>
-  </div>  
+  </div>
  <div class="row">
     <div class="col-25">
       <label for="dport">Destination port</label>
@@ -245,7 +244,7 @@ FORM_SCTP = '''
     <div class="col-75">
       <input type="text" id="dport" name="dport" value="2905" type="number" min="0" step="1" max="65535" size="5">
     </div>
-  </div>  
+  </div>
  <div class="row">
     <div class="col-25">
       <label for="pid">Protocol Id (3 means M3UA, 2 means M2UA)</label>
@@ -253,7 +252,7 @@ FORM_SCTP = '''
     <div class="col-75">
       <input type="text" id="pid" name="protocol" value="3" type="number" min="0" step="1" max="65535" size="5">
     </div>
-  </div>  
+  </div>
   <div class="row">
     <div class="col-25">
       <label for="tcphex">SCTP hex payload</label>
@@ -345,7 +344,7 @@ FORM_IP = '''
     <div class="col-75">
       <input type="text" id="pid" name="protocol" value="3" type="number" min="0" step="1" max="65535" size="5">
     </div>
-  </div>  
+  </div>
   <div class="row">
     <div class="col-25">
       <label for="tcphex">IP hex payload</label>
@@ -387,7 +386,7 @@ FORM_FULL = '''
     <div class="col-75">
       <input type="text" id="ltype" name="linktype" value="1" type="number" min="0" step="1" max="255" size="3">
     </div>
-  </div>  
+  </div>
   <div class="row">
     <div class="col-25">
       <label for="tcphex">Full hex payload</label>
@@ -438,4 +437,3 @@ FORM_FULL = '''
   </div>
 </div>
 '''
-
