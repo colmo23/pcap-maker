@@ -1,8 +1,13 @@
 # pcap-maker
 
+
+## Install
+
+pip3 install -r requirements.txt
+
 ## Usage:
 
-python3 runner.py
+python3 pcap_maker/runner.py
 
 
 
@@ -10,6 +15,6 @@ python3 runner.py
 
 pytest .
 
-## Code formatting
+## Code reformatting
 
-autopep8 --in-place --aggressive --aggressive html_pieces.py pcap_utils.py pcap_utils.pyc runner.py
+autopep8 --in-place --aggressive --aggressive pcap_maker/*py
