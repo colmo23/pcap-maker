@@ -220,6 +220,16 @@ FORM_UDP = '''
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-25">
+      DNS request (use dest port of 53)
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         43130100000100000000000003616f6c03636f6d0000010001
+      </div>
+    </div>
+  </div>
 </div>
 '''
 
