@@ -232,7 +232,7 @@ FORM_UDP = '''
   </div>
   <div class="row">
     <div class="col-25">
-      GTP v1 Create PDP Context Request - smaller example (use dest port of 2123)
+      GTP v1 - small example (use dest port of 2123)
     </div>
     <div class="col-75">
       <div class="wrapdiv">
