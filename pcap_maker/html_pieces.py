@@ -159,11 +159,21 @@ FORM_TCP = '''
 <div class="container">
   <div class="row">
     <div class="col-25">
-      HTML GET example
+      HTTP GET example
     </div>
     <div class="col-75">
       <div class="wrapdiv">
          474554202f20485454502f312e310d0a486f73743a20686f73743a706f72740d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-25">
+      HTTP2 example
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         485454502f312e312031303120537769746368696e672050726f746f636f6c730d0a436f6e6e656374696f6e3a20557067726164650d0a557067726164653a206832630d0a0d0a000012040000000000000300000064000400100000000100002000
       </div>
     </div>
   </div>
