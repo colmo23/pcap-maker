@@ -102,6 +102,9 @@ TOP_LINKS = '''
         <a href="/sctp">SCTP</a>
     </div>
     <div class="col-20">
+        <a href="/tcap">TCAP</a>
+    </div>
+    <div class="col-20">
         <a href="/ip">IP</a>
     </div>
     <div class="col-20">
@@ -382,6 +385,49 @@ FORM_SCTP = '''
 </div>
 '''
 
+FORM_TCAP = '''
+<div class="container">
+  <form action="/tcap" method="post">
+  <div class="row">
+    <div class="col-25">
+      <label for="tcphex">TCAP hex payload</label>
+    </div>
+    <div class="col-75">
+      <textarea id="hex" name="tcaphex" placeholder="TCAP hex (see below for examples)" style="height:200px"></textarea>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <input type="submit" value="Generate pcap">
+  </div>
+  </form>
+</div>
+<br/>
+<br/>
+<p>Samples</p>
+<div class="container">
+  <div class="row">
+    <div class="col-25">
+      TCAP Begin MAP MO FSM
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         6259480349d2286b1a2818060700118605010101a00d600ba1090607040000010015036c36a13402010102012e302c8407911808390100008207911808390100010418b5000c915383060020900000a70be8329bfd06dddf723619
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-25">
+      TCAP End Return Error
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         643c49035645066b262824060700118605010101a0196117a109060704000001001503a203020100a305a1030201006c0da30b02010102012030030a0105
+      </div>
+    </div>
+  </div>
+</div>
+'''
 FORM_IP = '''
 <div class="container">
   <form action="/ip" method="post">

@@ -80,6 +80,22 @@ def do_sctp_pcap():
     response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
     return bytes(pcap_obj)
 
+@get('/tcap')
+def get_tcap_network_info():
+    header = html_pieces.HEADER
+    form = html_pieces.FORM_TCAP
+    body = "<body>%s%s</body></html>" % (html_pieces.TOP_LINKS, form)
+    return header + body
+@post('/tcap')
+def do_tcap_pcap():
+    hexvalue = request.forms.get('tcaphex')
+    hexvalue = pcap_utils.cleanup_hex(hexvalue)
+    data = binascii.a2b_hex(hexvalue)
+    pkt = pcap_utils.get_tcap_stack(data=data)
+    pcap_obj = pcap_utils.make_pcap(pkt)
+    response.content_type = 'application/cap'
+    response.set_header("Content-Disposition", 'attachment; filename="x.pcap"')
+    return bytes(pcap_obj)
 
 @get('/ip')
 def get_ip_network_info():
