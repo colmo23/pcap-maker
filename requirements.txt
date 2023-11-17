@@ -1,2 +1,4 @@
 bottle==0.12.24
 dpkt==1.9.8
+Flask==2.2.3
+Werkzeug==2.2.2
