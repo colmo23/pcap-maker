@@ -65,8 +65,9 @@ def get_sctp_stack(data, src_ip=b"\x0a\x0a\x0a\x0a", dest_ip=b"\x0a\x0a\x0a\x10"
     eth_part = dpkt.ethernet.Ethernet(data=ip_part)
     return eth_part
 
+
 def get_tcap_stack(data):
-    #"010001010000009c00060008000000010210008900000065000015b0030200070900030e190b12080a12041808390100000b12080a12045383160002005b6259480349d2286b1a2818060700118605010101a00d600ba1090607040000010015036c36a13402010102012e302c8407911808390100008207911808390100010418b5000c915383060020900000a70be8329bfd06dddf723619000000"
+    # "010001010000009c00060008000000010210008900000065000015b0030200070900030e190b12080a12041808390100000b12080a12045383160002005b6259480349d2286b1a2818060700118605010101a00d600ba1090607040000010015036c36a13402010102012e302c8407911808390100008207911808390100010418b5000c915383060020900000a70be8329bfd06dddf723619000000"
     padding_len = (len(data) + 2) % 4
     if padding_len != 0:
         padding_len = 4 - padding_len
@@ -79,6 +80,7 @@ def get_tcap_stack(data):
     sctp_data = binascii.a2b_hex(m3ua_sccp_data_hex) + bytes(data) + padding
     eth_part = get_sctp_stack(sctp_data)
     return eth_part
+
 
 def get_ip_stack(data, protocol=99):
     ip_part = dpkt.ip.IP(
@@ -111,11 +113,13 @@ def test_sctp():
     response = get_sctp_stack(b'1234')
     assert response.data.data[-4:] == b'1234'
 
+
 def test_tcap():
     response = get_tcap_stack(b'1234')
     assert response.data.data[-6:] == b'1234\x00\x00'
     response = get_tcap_stack(b'12345')
     assert response.data.data[-6:] == b'12345\x00'
+
 
 def test_udp():
     response = get_udp_stack(data=b'123')
