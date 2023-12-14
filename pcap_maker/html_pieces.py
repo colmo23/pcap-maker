@@ -102,6 +102,9 @@ TOP_LINKS = '''
         <a href="/sctp">SCTP</a>
     </div>
     <div class="col-20">
+        <a href="/sccp">SCCP</a>
+    </div>
+    <div class="col-20">
         <a href="/tcap">TCAP</a>
     </div>
     <div class="col-20">
@@ -423,6 +426,59 @@ FORM_TCAP = '''
     <div class="col-75">
       <div class="wrapdiv">
          643c49035645066b262824060700118605010101a0196117a109060704000001001503a203020100a305a1030201006c0da30b02010102012030030a0105
+      </div>
+    </div>
+  </div>
+</div>
+'''
+
+FORM_SCCP = '''
+<div class="container">
+  <form action="/sccp" method="post">
+  <div class="row">
+    <div class="col-25">
+      <label for="tcphex">SCCP hex payload</label>
+    </div>
+    <div class="col-75">
+      <textarea id="hex" name="sccphex" placeholder="SCCP hex (see below for examples)" style="height:200px"></textarea>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <input type="submit" value="Generate pcap">
+  </div>
+  </form>
+</div>
+<br/>
+<br/>
+<p>Samples</p>
+<div class="container">
+  <div class="row">
+    <div class="col-25">
+      TCAP Begin MAP MO FSM
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         0900030e190b12080a12041808390100000b12080a12045383160002005b6259480349d2286b1a2818060700118605010101a00d600ba1090607040000010015036c36a13402010102012e302c8407911808390100008207911808390100010418b5000c915383060020900000a70be8329bfd06dddf723619
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-25">
+      TCAP Return Error
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         0900030e190b12080a12041808390100000b12080a12045383160002005b643c49035645066b262824060700118605010101a0196117a109060704000001001503a203020100a305a1030201006c0da30b02010102012030030a0105
+      </div>
+    </div>
+    </div>
+  <div class="row">
+    <div class="col-25">
+      TCAP Response Provide Roaming Number
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         0980030d170a120600120454045100000a120700120474141700004c644a49049b0001256b2a2828060700118605010101a01d611b80020780a109060704000001000303a203020100a305a1030201006c80a212020101300d020104300804069174141700000000
       </div>
     </div>
   </div>

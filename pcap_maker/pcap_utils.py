@@ -81,6 +81,22 @@ def get_tcap_stack(data):
     eth_part = get_sctp_stack(sctp_data)
     return eth_part
 
+def get_sccp_stack(data):
+    # "010001010000009c00060008000000010210008900000065000015b0030200070900030e190b12080a12041808390100000b12080a12045383160002005b6259480349d2286b1a2818060700118605010101a00d600ba1090607040000010015036c36a13402010102012e302c8407911808390100008207911808390100010418b5000c915383060020900000a70be8329bfd06dddf723619000000"
+    padding_len = (len(data) + 4) % 4
+    if padding_len != 0:
+        padding_len = 4 - padding_len
+#   padding_len = 3
+    print("padding len is %d" % padding_len)
+    padding = b"\x00" * padding_len
+    parameter_length = 16 + len(data)
+    parameter_length_field = "%04x" % (parameter_length)
+    m3ua_length = parameter_length + 18 + padding_len  # was 16
+    m3ua_length_field = "%08x" % (m3ua_length)
+    m3ua_data_hex = f"01000101{m3ua_length_field}00060008000000010210{parameter_length_field}00000065000015b003020007"
+    sctp_data = binascii.a2b_hex(m3ua_data_hex) + bytes(data) + padding
+    eth_part = get_sctp_stack(sctp_data)
+    return eth_part
 
 def get_ip_stack(data, protocol=99):
     ip_part = dpkt.ip.IP(

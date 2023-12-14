@@ -108,6 +108,26 @@ def do_tcap_pcap():
     response.headers.set("Content-Disposition", 'attachment; filename="x.pcap"')
     return response
 
+@app.get('/sccp')
+def get_sccp_network_info():
+    header = html_pieces.HEADER
+    form = html_pieces.FORM_SCCP
+    body = "<body>%s%s</body></html>" % (html_pieces.TOP_LINKS, form)
+    return header + body
+
+
+@app.post('/sccp')
+def do_sccp_pcap():
+    hexvalue = request.form.get('sccphex')
+    hexvalue = pcap_utils.cleanup_hex(hexvalue)
+    data = binascii.a2b_hex(hexvalue)
+    pkt = pcap_utils.get_sccp_stack(data=data)
+    pcap_obj = pcap_utils.make_pcap(pkt)
+    response = make_response(bytes(pcap_obj))
+    response.headers.set('Content-type', 'application/cap')
+    response.headers.set("Content-Disposition", 'attachment; filename="sccp.pcap"')
+    return response
+
 
 @app.get('/ip')
 def get_ip_network_info():
