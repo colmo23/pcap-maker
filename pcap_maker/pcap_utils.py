@@ -76,7 +76,9 @@ def get_tcap_stack(data):
     parameter_length_field = "%04x" % (parameter_length)
     m3ua_length = parameter_length + 16 + padding_len
     m3ua_length_field = "%08x" % (m3ua_length)
-    m3ua_sccp_data_hex = f"01000101{m3ua_length_field}00060008000000010210{parameter_length_field}00000065000015b0030200070900030e190b12080a12041808390100000b12080a12045383160002005b"
+    sccp_parameter_3_length_field = "%02x" % len(data)
+#   m3ua_sccp_data_hex = f"01000101{m3ua_length_field}00060008000000010210{parameter_length_field}00000065000015b0030200070900030e190b12080a12041808390100000b12080a12045383160002005b"
+    m3ua_sccp_data_hex = f"01000101{m3ua_length_field}00060008000000010210{parameter_length_field}00000065000015b0030200070900030e190b12080a12041808390100000b12080a1204538316000200{sccp_parameter_3_length_field}"
     sctp_data = binascii.a2b_hex(m3ua_sccp_data_hex) + bytes(data) + padding
     eth_part = get_sctp_stack(sctp_data)
     return eth_part

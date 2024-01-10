@@ -34,7 +34,7 @@ def do_tcp_pcap():
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
     response.headers.set('Content-type', 'application/cap')
-    response.headers.set("Content-Disposition", 'attachment; filename="x.pcap"')
+    response.headers.set("Content-Disposition", 'attachment; filename="tcp.pcap"')
     return response
 
 
@@ -57,7 +57,7 @@ def do_udp_pcap():
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
     response.headers.set('Content-type', 'application/cap')
-    response.headers.set("Content-Disposition", 'attachment; filename="x.pcap"')
+    response.headers.set("Content-Disposition", 'attachment; filename="udp.pcap"')
     return response
 
 
@@ -84,7 +84,7 @@ def do_sctp_pcap():
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
     response.headers.set('Content-type', 'application/cap')
-    response.headers.set("Content-Disposition", 'attachment; filename="x.pcap"')
+    response.headers.set("Content-Disposition", 'attachment; filename="sctp.pcap"')
     return response
 
 
@@ -105,7 +105,7 @@ def do_tcap_pcap():
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
     response.headers.set('Content-type', 'application/cap')
-    response.headers.set("Content-Disposition", 'attachment; filename="x.pcap"')
+    response.headers.set("Content-Disposition", 'attachment; filename="tcap.pcap"')
     return response
 
 @app.get('/sccp')
@@ -148,7 +148,7 @@ def do_ip_pcap():
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
     response.headers.set('Content-type', 'application/cap')
-    response.headers.set("Content-Disposition", 'attachment; filename="x.pcap"')
+    response.headers.set("Content-Disposition", 'attachment; filename="ip.pcap"')
     return response
 
 
@@ -170,7 +170,7 @@ def do_full_pcap():
     pcap_obj = pcap_utils.make_pcap(data, linktype=linktype)
     response = make_response(bytes(pcap_obj))
     response.headers.set('Content-type', 'application/cap')
-    response.headers.set("Content-Disposition", 'attachment; filename="x.pcap"')
+    response.headers.set("Content-Disposition", 'attachment; filename="full.pcap"')
     return response
 
 
