@@ -114,6 +114,12 @@ def get_ip_stack(data, protocol=99):
         data=ip_part)
     return eth_part
 
+def get_ethernet_stack(data):
+    eth_part = dpkt.ethernet.Ethernet(
+        #                                     src = eth_pkt.dst,
+        #                                     dst = eth_pkt.src,
+        data=data)
+    return eth_part
 
 def make_pcap(pkt, linktype=dpkt.pcap.DLT_EN10MB):
     fh = io.BytesIO()

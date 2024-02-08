@@ -111,6 +111,9 @@ TOP_LINKS = '''
         <a href="/ip">IP</a>
     </div>
     <div class="col-20">
+        <a href="/ethernet">Ethernet</a>
+    </div>
+    <div class="col-20">
         <a href="/full">Full protocol stack</a>
     </div>
    </div>
@@ -593,6 +596,51 @@ FORM_FULL = '''
     <div class="col-75">
       <div class="wrapdiv">
          1d1d2085024000900e00011100000a03020907039040380982990a06031317734508007989
+      </div>
+    </div>
+  </div>
+</div>
+'''
+
+
+FORM_ETHERNET = '''
+<div class="container">
+  <form action="/ethernet" method="post">
+  <div class="row">
+    <div class="col-25">
+      <label for="ethernethex">Ethernet hex payload</label>
+    </div>
+    <div class="col-75">
+      <textarea id="hex" name="ethernethex" placeholder="Ethernet hex (see below for examples)" style="height:200px"></textarea>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <input type="submit" value="Generate pcap">
+  </div>
+  </form>
+</div>
+<br/>
+<br/>
+<p>Samples</p>
+<div class="container">
+  <div class="row">
+    <div class="col-25">
+      ip/sctp/m3ua <br/>
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         45000068da010000fa844c7e585206860aad300d189f0b5add68d33d40ed9bde00030018d42b48920000000000000003010003040000000800030030d42b489300000001000000030100000100000020000d000800010002001100080000000d0006000800000456
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-25">
+      ip/tcp/http <br/>
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         4500005e000000004006526d0a0a0a0a0a0a0a1003e80050deadbeef000000005002ffffe6b90000474554202f20485454502f312e310d0a486f73743a20686f73743a706f72740d0a436f6e6e656374696f6e3a20636c6f73650d0a0d0a
       </div>
     </div>
   </div>

@@ -14,6 +14,25 @@ def all():
     body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, html_pieces.INFO)
     return header + body
 
+@app.get('/ethernet')
+def get_ethernet_network_info():
+    header = html_pieces.HEADER
+    form = html_pieces.FORM_ETHERNET
+    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, form)
+    return header + body
+
+
+@app.post('/ethernet')
+def do_ethernet_pcap():
+    ethernet_hex = request.form.get('ethernethex')
+    ethernet_hex = pcap_utils.cleanup_hex(ethernet_hex)
+    ethernet_data = binascii.a2b_hex(ethernet_hex)
+    pkt = pcap_utils.get_ethernet_stack(data=ethernet_data)
+    pcap_obj = pcap_utils.make_pcap(pkt)
+    response = make_response(bytes(pcap_obj))
+    response.headers.set('Content-type', 'application/cap')
+    response.headers.set("Content-Disposition", 'attachment; filename="ethernet.pcap"')
+    return response
 
 @app.get('/tcp')
 def get_tcp_network_info():
