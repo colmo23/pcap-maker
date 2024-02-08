@@ -27,6 +27,7 @@ def do_ethernet_pcap():
     ethernet_hex = request.form.get('ethernethex')
     ethernet_hex = pcap_utils.cleanup_hex(ethernet_hex)
     ethernet_data = binascii.a2b_hex(ethernet_hex)
+    # TODO could add a protocol type field (currently is hard coded to 0x0800 IP)
     pkt = pcap_utils.get_ethernet_stack(data=ethernet_data)
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
