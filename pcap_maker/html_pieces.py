@@ -599,6 +599,16 @@ FORM_FULL = '''
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-25">
+      Linux Cooked Capture/IP/UPD/VXLAN....  <br/> (use linktype of 113)
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+         0000030400060000000000000000080045000075863140004011b6447f0000017f000001169d12b50061fe740800000000000100620deb01aa1efaaed0f78fdc080045000043000000004011a3103953300202136c329c40084b002f79e74822002308ca5b2974d6130056000d001806f2100fa106f210002e70035200010006030001000c00000000000000000000000000000000
+      </div>
+    </div>
+  </div>
 </div>
 '''
 
