@@ -83,6 +83,7 @@ def get_tcap_stack(data):
     eth_part = get_sctp_stack(sctp_data)
     return eth_part
 
+
 def get_sccp_stack(data):
     # "010001010000009c00060008000000010210008900000065000015b0030200070900030e190b12080a12041808390100000b12080a12045383160002005b6259480349d2286b1a2818060700118605010101a00d600ba1090607040000010015036c36a13402010102012e302c8407911808390100008207911808390100010418b5000c915383060020900000a70be8329bfd06dddf723619000000"
     padding_len = (len(data) + 4) % 4
@@ -100,6 +101,7 @@ def get_sccp_stack(data):
     eth_part = get_sctp_stack(sctp_data)
     return eth_part
 
+
 def get_ip_stack(data, protocol=99):
     ip_part = dpkt.ip.IP(
         src=b'\x0a\x0a\x0a\x0a',
@@ -114,12 +116,14 @@ def get_ip_stack(data, protocol=99):
         data=ip_part)
     return eth_part
 
+
 def get_ethernet_stack(data):
     eth_part = dpkt.ethernet.Ethernet(
         #                                     src = eth_pkt.dst,
         #                                     dst = eth_pkt.src,
         data=data)
     return eth_part
+
 
 def make_pcap(pkt, linktype=dpkt.pcap.DLT_EN10MB):
     fh = io.BytesIO()

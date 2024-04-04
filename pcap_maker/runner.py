@@ -14,6 +14,7 @@ def all():
     body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, html_pieces.INFO)
     return header + body
 
+
 @app.get('/ethernet')
 def get_ethernet_network_info():
     header = html_pieces.HEADER
@@ -34,6 +35,7 @@ def do_ethernet_pcap():
     response.headers.set('Content-type', 'application/cap')
     response.headers.set("Content-Disposition", 'attachment; filename="ethernet.pcap"')
     return response
+
 
 @app.get('/tcp')
 def get_tcp_network_info():
@@ -127,6 +129,7 @@ def do_tcap_pcap():
     response.headers.set('Content-type', 'application/cap')
     response.headers.set("Content-Disposition", 'attachment; filename="tcap.pcap"')
     return response
+
 
 @app.get('/sccp')
 def get_sccp_network_info():
