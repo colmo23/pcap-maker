@@ -9,9 +9,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def all():
+def root_page():
     header = html_pieces.HEADER
-    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, html_pieces.INFO)
+    body = f"<body>{html_pieces.TOP_LINKS}{html_pieces.INFO}</body></hrml>"
     return header + body
 
 
@@ -19,7 +19,7 @@ def all():
 def get_ethernet_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_ETHERNET
-    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></hrml>"
     return header + body
 
 
@@ -41,7 +41,7 @@ def do_ethernet_pcap():
 def get_tcp_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_TCP
-    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></html>"
     return header + body
 
 
@@ -64,7 +64,7 @@ def do_tcp_pcap():
 def get_udp_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_UDP
-    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></html>"
     return header + body
 
 
@@ -87,7 +87,7 @@ def do_udp_pcap():
 def get_sctp_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_SCTP
-    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></html>"
     return header + body
 
 
@@ -114,7 +114,7 @@ def do_sctp_pcap():
 def get_tcap_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_TCAP
-    body = "<body>%s%s</body></html>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></html>"
     return header + body
 
 
@@ -135,7 +135,7 @@ def do_tcap_pcap():
 def get_sccp_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_SCCP
-    body = "<body>%s%s</body></html>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></html>"
     return header + body
 
 
@@ -156,7 +156,7 @@ def do_sccp_pcap():
 def get_ip_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_IP
-    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></html>"
     return header + body
 
 
@@ -179,7 +179,7 @@ def do_ip_pcap():
 def get_full_network_info():
     header = html_pieces.HEADER
     form = html_pieces.FORM_FULL
-    body = "<body>%s%s</body></hrml>" % (html_pieces.TOP_LINKS, form)
+    body = f"<body>{html_pieces.TOP_LINKS}{form}</body></html>"
     return header + body
 
 
