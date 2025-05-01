@@ -1,4 +1,4 @@
-CSS = '''
+CSS = """
 * {
   box-sizing: border-box;
 }
@@ -80,16 +80,19 @@ input[type=submit]:hover {
 .wrapdiv {
   word-wrap: break-word;
 }
-'''
-HEADER = '''<!DOCTYPE html>
+"""
+HEADER = (
+    """<!DOCTYPE html>
 <html>
 <head>
 <style>
 %s
 </style>
-</head> ''' % CSS
+</head> """
+    % CSS
+)
 
-TOP_LINKS = '''
+TOP_LINKS = """
  <div class="header_links">
    <div class="row">
     <div class="col-20">
@@ -121,9 +124,9 @@ TOP_LINKS = '''
         <br/>
 <br/>
 <br/>
-    '''
+    """
 
-INFO = '''
+INFO = """
 <div class="container">
 <div class="info">
 This site takes hex dumps of network messages and generates a pcap file.
@@ -134,10 +137,10 @@ This site takes hex dumps of network messages and generates a pcap file.
 A pcap file can be viewed via the Wireshark desktop application, see <a href="https://www.wireshark.org/">www.wireshark.org</a>
 </div>
 </div>
-'''
+"""
 
 
-FORM_TCP = '''
+FORM_TCP = """
 <div class="container">
   <form action="/tcp" method="post">
  <div class="row">
@@ -197,10 +200,10 @@ FORM_TCP = '''
     </div>
   </div>
 </div>
-'''
+"""
 
 
-FORM_UDP = '''
+FORM_UDP = """
 <div class="container">
   <form action="/udp" method="post">
  <div class="row">
@@ -281,10 +284,10 @@ FORM_UDP = '''
 </div>
   </div>
 </div>
-'''
+"""
 
 
-FORM_SCTP = '''
+FORM_SCTP = """
 <div class="container">
   <form action="/sctp" method="post">
  <div class="row">
@@ -400,9 +403,9 @@ FORM_SCTP = '''
     </div>
   </div>
 </div>
-'''
+"""
 
-FORM_TCAP = '''
+FORM_TCAP = """
 <div class="container">
   <form action="/tcap" method="post">
   <div class="row">
@@ -444,9 +447,9 @@ FORM_TCAP = '''
     </div>
   </div>
 </div>
-'''
+"""
 
-FORM_SCCP = '''
+FORM_SCCP = """
 <div class="container">
   <form action="/sccp" method="post">
   <div class="row">
@@ -497,8 +500,8 @@ FORM_SCCP = '''
     </div>
   </div>
 </div>
-'''
-FORM_IP = '''
+"""
+FORM_IP = """
 <div class="container">
   <form action="/ip" method="post">
  <div class="row">
@@ -538,9 +541,9 @@ FORM_IP = '''
     </div>
   </div>
 </div>
-'''
+"""
 
-FORM_FULL = '''
+FORM_FULL = """
 <div class="container">
   <form action="/full" method="post">
  <div class="row">
@@ -610,10 +613,10 @@ FORM_FULL = '''
     </div>
   </div>
 </div>
-'''
+"""
 
 
-FORM_ETHERNET = '''
+FORM_ETHERNET = """
 <div class="container">
   <form action="/ethernet" method="post">
   <div class="row">
@@ -655,4 +658,4 @@ FORM_ETHERNET = '''
     </div>
   </div>
 </div>
-'''
+"""
