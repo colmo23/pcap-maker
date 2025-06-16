@@ -44,6 +44,11 @@ pip3 install flake8
 flake8 pcap_maker
 ```
 
+```
+pip3 install pylint
+pylint pcap_maker/*py
+```
+
 
 ## CI tests
 ```
