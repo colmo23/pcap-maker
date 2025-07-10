@@ -1,3 +1,5 @@
+"html pieces"
+
 CSS = """
 * {
   box-sizing: border-box;
@@ -81,16 +83,14 @@ input[type=submit]:hover {
   word-wrap: break-word;
 }
 """
-HEADER = (
-    """<!DOCTYPE html>
+HEADER = f"""<!DOCTYPE html>
 <html>
 <head>
 <style>
-%s
+{CSS}
 </style>
 </head> """
-    % CSS
-)
+
 
 TOP_LINKS = """
  <div class="header_links">

@@ -1,7 +1,11 @@
+"utils"
+
 import binascii
 import dpkt
 import io
 import struct
+
+
 
 
 def cleanup_hex(hex_string):
@@ -101,10 +105,10 @@ def get_tcap_stack(data):
         padding_len = 4 - padding_len
     padding = b"\x00" * padding_len
     parameter_length = 46 + len(data)
-    parameter_length_field = "%04x" % (parameter_length)
+    parameter_length_field = f"{parameter_length:04x}"
     m3ua_length = parameter_length + 16 + padding_len
-    m3ua_length_field = "%08x" % (m3ua_length)
-    sccp_parameter_3_length_field = "%02x" % len(data)
+    m3ua_length_field = f"{m3ua_length:08x}"
+    sccp_parameter_3_length_field = f"{len(data):02x}"
     m3ua_sccp_data_hex = f"01000101{m3ua_length_field}00060008000000010210{parameter_length_field}00000065000015b0030200070900030e190b12080a12041808390100000b12080a1204538316000200{sccp_parameter_3_length_field}"
     sctp_data = binascii.a2b_hex(m3ua_sccp_data_hex) + bytes(data) + padding
     eth_part = get_sctp_stack(sctp_data)
@@ -117,12 +121,12 @@ def get_sccp_stack(data):
     if padding_len != 0:
         padding_len = 4 - padding_len
     #   padding_len = 3
-    print("padding len is %d" % padding_len)
+    print(f"padding len is {padding_len}")
     padding = b"\x00" * padding_len
     parameter_length = 16 + len(data)
-    parameter_length_field = "%04x" % (parameter_length)
+    parameter_length_field = f"{parameter_length:04x}"
     m3ua_length = parameter_length + 18 + padding_len  # was 16
-    m3ua_length_field = "%08x" % (m3ua_length)
+    m3ua_length_field = f"{m3ua_length:08x}"
     m3ua_data_hex = f"01000101{m3ua_length_field}00060008000000010210{parameter_length_field}00000065000015b003020007"
     sctp_data = binascii.a2b_hex(m3ua_data_hex) + bytes(data) + padding
     eth_part = get_sctp_stack(sctp_data)
@@ -191,10 +195,11 @@ def test_tcp():
 
 if __name__ == "__main__":
     http = get_tcp_stack(tcp_data=b"GET /\r\n\r\n\r\n")
-    print("generated http request: %s" % repr(http))
-    print("raw: %s" % (repr(str(http))))
+    print(f"generated http request: {repr(http)}")
+    print(f"raw: {repr(str(http))}")
+
     pcap_str = make_pcap(http)
-    print("raw pcap: %s" % (repr(str(pcap_str))))
+    print(f"raw pcap: {repr(str(pcap_str))}")
     fh = open("xx.pcap", "wb")
     fh.write(bytes(pcap_str))
     fh.close()
