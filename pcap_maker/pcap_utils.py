@@ -6,8 +6,6 @@ import io
 import struct
 
 
-
-
 def cleanup_hex(hex_string):
     hex_string = "".join(hex_string.split("\r\n"))
     hex_string = "".join(hex_string.split("\n"))
