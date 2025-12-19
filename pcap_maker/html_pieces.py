@@ -18,7 +18,7 @@ label {
   display: inline-block;
 }
 
-input[type=submit] {
+input[type=button] {
   background-color: #04AA6D;
   color: white;
   padding: 12px 20px;
@@ -89,6 +89,30 @@ HEADER = f"""<!DOCTYPE html>
 <style>
 {CSS}
 </style>
+<script>
+function isValidHexadecimal(text) {{
+  const cleanedText = text.replace(/\s/g, '');
+  if (cleanedText.length === 0) {{
+    return true;
+  }}
+  const isHex = /^[0-9a-fA-F]*$/.test(cleanedText);
+  if (!isHex) {{
+    return false;
+  }}
+  return cleanedText.length % 2 === 0;
+}}
+
+function validateAndSubmit(textareaId, errorId, form) {{
+  const textarea = document.getElementById(textareaId);
+  const errorElement = document.getElementById(errorId);
+  if (isValidHexadecimal(textarea.value)) {{
+    errorElement.textContent = '';
+    form.submit();
+  }} else {{
+    errorElement.textContent = 'Error: Data must be a valid hexadecimal string with an even number of characters.';
+  }}
+}}
+</script>
 </head> """
 
 
@@ -142,7 +166,7 @@ A pcap file can be viewed via the Wireshark desktop application, see <a href="ht
 
 FORM_TCP = """
 <div class="container">
-  <form action="/tcp" method="post">
+  <form id="tcp_form" action="/tcp" method="post">
  <div class="row">
     <div class="col-25">
       <label for="dport">Destination port</label>
@@ -157,11 +181,12 @@ FORM_TCP = """
     </div>
     <div class="col-75">
       <textarea id="tcphex" name="tcphex" placeholder="TCP hex (see below for examples)" style="height:200px"></textarea>
+      <div id="tcphex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('tcphex', 'tcphex_error', document.getElementById('tcp_form'))">
   </div>
   </form>
 </div>
@@ -205,7 +230,7 @@ FORM_TCP = """
 
 FORM_UDP = """
 <div class="container">
-  <form action="/udp" method="post">
+  <form id="udp_form" action="/udp" method="post">
  <div class="row">
     <div class="col-25">
       <label for="dport">Destination port</label>
@@ -216,15 +241,16 @@ FORM_UDP = """
   </div>
   <div class="row">
     <div class="col-25">
-      <label for="tcphex">UDP hex payload</label>
+      <label for="udphex">UDP hex payload</label>
     </div>
     <div class="col-75">
-      <textarea id="tcphex" name="udphex" placeholder="UDP hex (see below for examples)" style="height:200px"></textarea>
+      <textarea id="udphex" name="udphex" placeholder="UDP hex (see below for examples)" style="height:200px"></textarea>
+      <div id="udphex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('udphex', 'udphex_error', document.getElementById('udp_form'))">
   </div>
   </form>
 </div>
@@ -289,7 +315,7 @@ FORM_UDP = """
 
 FORM_SCTP = """
 <div class="container">
-  <form action="/sctp" method="post">
+  <form id="sctp_form" action="/sctp" method="post">
  <div class="row">
     <div class="col-25">
       <label for="sport">Source port</label>
@@ -316,15 +342,16 @@ FORM_SCTP = """
   </div>
   <div class="row">
     <div class="col-25">
-      <label for="tcphex">SCTP hex payload</label>
+      <label for="sctphex">SCTP hex payload</label>
     </div>
     <div class="col-75">
-      <textarea id="hex" name="sctphex" placeholder="SCTP hex (see below for examples)" style="height:200px"></textarea>
+      <textarea id="sctphex" name="sctphex" placeholder="SCTP hex (see below for examples)" style="height:200px"></textarea>
+      <div id="sctphex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('sctphex', 'sctphex_error', document.getElementById('sctp_form'))">
   </div>
   </form>
 </div>
@@ -417,18 +444,19 @@ FORM_SCTP = """
 
 FORM_TCAP = """
 <div class="container">
-  <form action="/tcap" method="post">
+  <form id="tcap_form" action="/tcap" method="post">
   <div class="row">
     <div class="col-25">
-      <label for="tcphex">TCAP hex payload</label>
+      <label for="tcaphex">TCAP hex payload</label>
     </div>
     <div class="col-75">
-      <textarea id="hex" name="tcaphex" placeholder="TCAP hex (see below for examples)" style="height:200px"></textarea>
+      <textarea id="tcaphex" name="tcaphex" placeholder="TCAP hex (see below for examples)" style="height:200px"></textarea>
+      <div id="tcaphex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('tcaphex', 'tcaphex_error', document.getElementById('tcap_form'))">
   </div>
   </form>
 </div>
@@ -461,18 +489,19 @@ FORM_TCAP = """
 
 FORM_SCCP = """
 <div class="container">
-  <form action="/sccp" method="post">
+  <form id="sccp_form" action="/sccp" method="post">
   <div class="row">
     <div class="col-25">
-      <label for="tcphex">SCCP hex payload</label>
+      <label for="sccphex">SCCP hex payload</label>
     </div>
     <div class="col-75">
-      <textarea id="hex" name="sccphex" placeholder="SCCP hex (see below for examples)" style="height:200px"></textarea>
+      <textarea id="sccphex" name="sccphex" placeholder="SCCP hex (see below for examples)" style="height:200px"></textarea>
+      <div id="sccphex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('sccphex', 'sccphex_error', document.getElementById('sccp_form'))">
   </div>
   </form>
 </div>
@@ -513,7 +542,7 @@ FORM_SCCP = """
 """
 FORM_IP = """
 <div class="container">
-  <form action="/ip" method="post">
+  <form id="ip_form" action="/ip" method="post">
  <div class="row">
     <div class="col-25">
       <label for="pid">Protocol</label>
@@ -524,15 +553,16 @@ FORM_IP = """
   </div>
   <div class="row">
     <div class="col-25">
-      <label for="tcphex">IP hex payload</label>
+      <label for="iphex">IP hex payload</label>
     </div>
     <div class="col-75">
-      <textarea id="hex" name="iphex" placeholder="IP hex (see below for examples)" style="height:200px"></textarea>
+      <textarea id="iphex" name="iphex" placeholder="IP hex (see below for examples)" style="height:200px"></textarea>
+      <div id="iphex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('iphex', 'iphex_error', document.getElementById('ip_form'))">
   </div>
   </form>
 </div>
@@ -555,7 +585,7 @@ FORM_IP = """
 
 FORM_FULL = """
 <div class="container">
-  <form action="/full" method="post">
+  <form id="full_form" action="/full" method="post">
  <div class="row">
     <div class="col-25">
       <label for="ltype">Link Type</label>
@@ -566,15 +596,16 @@ FORM_FULL = """
   </div>
   <div class="row">
     <div class="col-25">
-      <label for="tcphex">Full hex payload</label>
+      <label for="fullhex">Full hex payload</label>
     </div>
     <div class="col-75">
-      <textarea id="hex" name="fullhex" placeholder="Full hex (see below for examples)" style="height:200px"></textarea>
+      <textarea id="fullhex" name="fullhex" placeholder="Full hex (see below for examples)" style="height:200px"></textarea>
+      <div id="fullhex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('fullhex', 'fullhex_error', document.getElementById('full_form'))">
   </div>
   </form>
 </div>
@@ -628,18 +659,19 @@ FORM_FULL = """
 
 FORM_ETHERNET = """
 <div class="container">
-  <form action="/ethernet" method="post">
+  <form id="ethernet_form" action="/ethernet" method="post">
   <div class="row">
     <div class="col-25">
       <label for="ethernethex">Ethernet hex payload</label>
     </div>
     <div class="col-75">
-      <textarea id="hex" name="ethernethex" placeholder="Ethernet hex (see below for examples)" style="height:200px"></textarea>
+      <textarea id="ethernethex" name="ethernethex" placeholder="Ethernet hex (see below for examples)" style="height:200px"></textarea>
+      <div id="ethernethex_error" style="color: red;"></div>
     </div>
   </div>
   <br>
   <div class="row">
-    <input type="submit" value="Generate pcap">
+    <input type="button" value="Generate pcap" onclick="validateAndSubmit('ethernethex', 'ethernethex_error', document.getElementById('ethernet_form'))">
   </div>
   </form>
 </div>
