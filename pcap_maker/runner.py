@@ -3,8 +3,8 @@
 "runner"
 
 import binascii
-import pcap_utils
-import html_pieces
+from . import pcap_utils
+from . import html_pieces
 
 from flask import Flask, request, make_response
 

@@ -15,7 +15,7 @@ pip3 install -r requirements.txt
 ## Usage:
 
 ```
-./pcap_maker/runner.py
+python3 -m pcap_maker.runner
 ```
 
 
