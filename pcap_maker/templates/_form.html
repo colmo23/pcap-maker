@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <form id="{{ form_id }}" action="{{ action }}" method="post">
+    {% for field in form_fields %}
+    <div class="row">
+      <div class="col-25">
+        <label for="{{ field.name }}">{{ field.label }}</label>
+      </div>
+      <div class="col-75">
+        {% if field.type == 'textarea' %}
+        <textarea id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" style="height:200px"></textarea>
+        <div id="{{ field.name }}_error" style="color: red;"></div>
+        {% else %}
+        <input type="{{ field.type }}" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" min="{{ field.min }}" step="{{ field.step }}" max="{{ field.max }}" size="{{ field.size }}">
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    <br>
+    <div class="row">
+      <input type="button" value="Generate pcap" onclick="validateAndSubmit('{{ validation_field_id }}', '{{ validation_error_id }}', document.getElementById('{{ form_id }}'))">
+    </div>
+  </form>
+</div>
+<br/>
+<br/>
+<p>Samples</p>
+<div class="container">
+  {% for sample in samples %}
+  <div class="row">
+    <div class="col-25">
+      {{ sample.title | safe }}
+    </div>
+    <div class="col-75">
+      <div class="wrapdiv">
+        {{ sample.data }}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

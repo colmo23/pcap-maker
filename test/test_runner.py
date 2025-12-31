@@ -14,19 +14,20 @@ def test_root_page(client):
     assert rv.status_code == 200
     assert b'pcap file' in rv.data
 
-@pytest.mark.parametrize("path", [
-    "/ethernet",
-    "/tcp",
-    "/udp",
-    "/sctp",
-    "/tcap",
-    "/sccp",
-    "/ip",
-    "/full",
+@pytest.mark.parametrize("path, expected_content", [
+    ("/ethernet", b"Ethernet hex payload"),
+    ("/tcp", b"TCP hext payload"),
+    ("/udp", b"UDP hex payload"),
+    ("/sctp", b"SCTP hex payload"),
+    ("/tcap", b"TCAP hex payload"),
+    ("/sccp", b"SCCP hex payload"),
+    ("/ip", b"IP hex payload"),
+    ("/full", b"Full hex payload"),
 ])
-def test_get_pages(client, path):
+def test_get_pages(client, path, expected_content):
     rv = client.get(path)
     assert rv.status_code == 200
+    assert expected_content in rv.data
 
 def test_post_ethernet(client):
     rv = client.post('/ethernet', data=dict(

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script>
+function isValidHexadecimal(text) {
+  const cleanedText = text.replace(/\s/g, '');
+  if (cleanedText.length === 0) {
+    return true;
+  }
+  const isHex = /^[0-9a-fA-F]*$/.test(cleanedText);
+  if (!isHex) {
+    return false;
+  }
+  return cleanedText.length % 2 === 0;
+}
+
+function validateAndSubmit(textareaId, errorId, form) {
+  const textarea = document.getElementById(textareaId);
+  const errorElement = document.getElementById(errorId);
+  if (isValidHexadecimal(textarea.value)) {
+    errorElement.textContent = '';
+    form.submit();
+  } else {
+    errorElement.textContent = 'Error: Data must be a valid hexadecimal string with an even number of characters.';
+  }
+}
+</script>
+</head>
+<body>
+
+ <div class="header_links">
+   <div class="row">
+    <div class="col-20">
+        <a href="{{ url_for('get_tcp_network_info') }}">TCP</a>
+    </div>
+    <div class="col-20">
+        <a href="{{ url_for('get_udp_network_info') }}">UDP</a>
+   </div>
+    <div class="col-20">
+        <a href="{{ url_for('get_sctp_network_info') }}">SCTP</a>
+    </div>
+    <div class="col-20">
+        <a href="{{ url_for('get_sccp_network_info') }}">SCCP</a>
+    </div>
+    <div class="col-20">
+        <a href="{{ url_for('get_tcap_network_info') }}">TCAP</a>
+    </div>
+    <div class="col-20">
+        <a href="{{ url_for('get_ip_network_info') }}">IP</a>
+    </div>
+    <div class="col-20">
+        <a href="{{ url_for('get_ethernet_network_info') }}">Ethernet</a>
+    </div>
+    <div class="col-20">
+        <a href="{{ url_for('get_full_network_info') }}">Full protocol stack</a>
+    </div>
+   </div>
+  </div>
+        <br/>
+<br/>
+<br/>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
