@@ -8,7 +8,7 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -e .[dev]
 ```
-Replace the pip command with this for production
+IF in a production environment replace the above pip command with this one:
 ```
 pip install .
 ```
