@@ -8,9 +8,9 @@ version = "0.1.0"
 description = "A tool to create pcap files."
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "MIT" } # Choose an appropriate license
+license = { text = "MIT" }
 authors = [
-    { name = "Your Name", email = "your@email.com" },
+    { name = "Colm O'Shea", email = "colmo23@gmail.com" },
 ]
 dependencies = [
     "dpkt==1.9.8",
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-username/pcap-maker" # Replace with your repo URL
+Homepage = "https://github.com/colmo23/pcap-maker" 
 
 [project.optional-dependencies]
 dev = [
@@ -39,8 +39,8 @@ norecursedirs = ".tox .git *.egg-info __pycache__ dist build dpkt"
 testpaths = "."
 
 [tool.flake8]
-max-line-length = 140
+max-line-length = 1000
 exclude = ".git,__pycache__,docs/source/conf.py,old,build,dist,dpkt,bottle.py"
 
 [tool.black]
-line-length = 88
+line-length = 1000

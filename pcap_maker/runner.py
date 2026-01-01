@@ -51,7 +51,8 @@ def do_ethernet_pcap():
     ethernet_hex = request.form.get("ethernethex")
     ethernet_hex = pcap_utils.cleanup_hex(ethernet_hex)
     ethernet_data = binascii.a2b_hex(ethernet_hex)
-    # TODO could add a protocol type field (currently is hard coded to 0x0800 IP)
+    # TODO could add a protocol type field (currently is hard coded to 0x0800
+    # IP)
     pkt = pcap_utils.get_ethernet_stack(data=ethernet_data)
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
@@ -284,9 +285,7 @@ def do_sctp_pcap():
     hexvalue = request.form.get("sctphex")
     hexvalue = pcap_utils.cleanup_hex(hexvalue)
     data = binascii.a2b_hex(hexvalue)
-    pkt = pcap_utils.get_sctp_stack(
-        data=data, src_port=sport, dest_port=dport, protocol=protocol
-    )
+    pkt = pcap_utils.get_sctp_stack(data=data, src_port=sport, dest_port=dport, protocol=protocol)
     pcap_obj = pcap_utils.make_pcap(pkt)
     response = make_response(bytes(pcap_obj))
     response.headers.set("Content-type", "application/cap")
