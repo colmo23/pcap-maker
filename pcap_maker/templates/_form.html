@@ -1,25 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container">
+
+
+<!--
+  for hex editing
+    <div class="editor-container">
+        <div class="line-numbers" contenteditable="false"></div>
+        <textarea id="hex-input" class="hex-input" spellcheck="false"></textarea>
+        <div class="ascii-output" contenteditable="false"></div>
+    </div>
+-->
+
+
+<div class="container-container">
   <form id="{{ form_id }}" action="{{ action }}" method="post">
     {% for field in form_fields %}
     <div class="row">
-      <div class="col-25">
-        <label for="{{ field.name }}">{{ field.label }}</label>
-      </div>
-      <div class="col-75">
         {% if field.type == 'textarea' %}
-        <textarea id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" style="height:200px"></textarea>
-        <div id="{{ field.name }}_error" style="color: red;"></div>
+             <div class="line-numbers col-15" contenteditable="false"></div>
+             <div>
+             <textarea id="{{ field.name }}" class="hex-input col-65"  name="{{ field.name }}" placeholder="{{ field.placeholder }}" style="height:200px"></textarea>
+             </div>
+             <!--     <div id="{{ field.name }}_error" style="color: red;"></div> -->
+             <div class="ascii-output col-20" contenteditable="false"></div>
         {% else %}
-        <input type="{{ field.type }}" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" min="{{ field.min }}" step="{{ field.step }}" max="{{ field.max }}" size="{{ field.size }}">
+             <div class="col-25">
+             <label for="{{ field.name }}">{{ field.label }}</label>
+             </div>
+             <div class="col-75">
+             <input type="{{ field.type }}" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" min="{{ field.min }}" step="{{ field.step }}" max="{{ field.max }}" size="{{ field.size }}">
+             </div>
         {% endif %}
-      </div>
     </div>
     {% endfor %}
     <br>
     <div class="row">
-      <input type="button" value="Generate pcap" onclick="validateAndSubmit('{{ validation_field_id }}', '{{ validation_error_id }}', document.getElementById('{{ form_id }}'))">
+      <input type="submit" value="Generate pcap"/>
     </div>
   </form>
 </div>
@@ -40,4 +56,5 @@
   </div>
   {% endfor %}
 </div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
