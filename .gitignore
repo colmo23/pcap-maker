@@ -2,3 +2,5 @@ __pycache__*
 *.pyc
 tags
 venv
+build
+pcap_maker.egg-info
