@@ -97,7 +97,7 @@ input[type=submit]:hover {
 /* added for hex editor feature */
 .editor-container {
     display: flex;
-    width: 100%;
+    width: 100%; 
     height: 90vh;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -149,4 +149,7 @@ input[type=submit]:hover {
   padding: 20px;
   margin-bottom: 20px; /* Add some space between the form and the samples */
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  max-width: 650px; /* Limit the width of the container */
+  margin-left: auto; /* Center the container */
+  margin-right: auto; /* Center the container */
 }
