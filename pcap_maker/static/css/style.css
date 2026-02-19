@@ -194,6 +194,39 @@ input[type=button]:hover, input[type=submit]:hover {
   min-width: 0;
 }
 
+.sample-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.sample-btn {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid #bbb;
+  background: #fff;
+  color: #555;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.sample-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #2c7a4b;
+  color: #2c7a4b;
+}
+
+.use-btn {
+  border-color: #2c7a4b;
+  color: #2c7a4b;
+}
+
+.use-btn:hover {
+  background-color: #2c7a4b;
+  color: #fff;
+}
+
 .wrapdiv {
   word-wrap: break-word;
   font-family: monospace;

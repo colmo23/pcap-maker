@@ -64,4 +64,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hexInput.value) {
         updateEditor();
     }
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            navigator.clipboard.writeText(btn.dataset.hex);
+            const orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = orig; }, 1200);
+        });
+    });
+
+    document.querySelectorAll('.use-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const field = document.getElementById(btn.dataset.field);
+            if (field) {
+                field.value = btn.dataset.hex;
+                field.dispatchEvent(new Event('input'));
+                field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    });
 });

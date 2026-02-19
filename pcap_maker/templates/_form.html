@@ -28,6 +28,10 @@
   <div class="row">
     <div class="col-25">
       {{ sample.title | safe }}
+      <div class="sample-actions">
+        <button type="button" class="sample-btn copy-btn" data-hex="{{ sample.data }}" title="Copy to clipboard">Copy</button>
+        <button type="button" class="sample-btn use-btn" data-hex="{{ sample.data }}" data-field="{{ validation_field_id }}" title="Use in form">Use</button>
+      </div>
     </div>
     <div class="col-75">
       <div class="wrapdiv">
