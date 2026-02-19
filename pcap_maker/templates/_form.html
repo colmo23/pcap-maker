@@ -1,46 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-<!--
-  for hex editing
-    <div class="editor-container">
-        <div class="line-numbers" contenteditable="false"></div>
-        <textarea id="hex-input" class="hex-input" spellcheck="false"></textarea>
-        <div class="ascii-output" contenteditable="false"></div>
-    </div>
--->
-
-
 <div class="container-container">
-  <form id="{{ form_id }}" action="{{ action }}" method="post">
+  <form id="{{ form_id }}" action="{{ action }}" class="form-grid" method="post">
     {% for field in form_fields %}
-    <div class="row">
-      <div class="col-25">
-        <label for="{{ field.name }}">{{ field.label }}</label>
-      </div>
-        {% if field.type == 'textarea' %}
-          <div class="col-75">
-            <textarea id="{{ field.name }}" class="hex-input"  name="{{ field.name }}" placeholder="{{ field.placeholder }}" style="height:200px" cols="50"></textarea>
-          </div>
-          <div id="{{ field.name }}_error" style="color: red;"></div>
-        {% else %}
-           <div class="col-75">
-             <input type="{{ field.type }}" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" min="{{ field.min }}" step="{{ field.step }}" max="{{ field.max }}" size="{{ field.size }}">
-           </div>
-        {% endif %}
+    <div class="form-row">
+      <label for="{{ field.name }}">{{ field.label }}</label>
+      {% if field.type == 'textarea' %}
+        <div>
+          <textarea id="{{ field.name }}" class="hex-input" name="{{ field.name }}" placeholder="{{ field.placeholder }}" spellcheck="false"></textarea>
+          <div id="{{ field.name }}_error" class="field-error"></div>
+        </div>
+      {% else %}
+        <input type="{{ field.type }}" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" min="{{ field.min }}" step="{{ field.step }}" max="{{ field.max }}" size="{{ field.size }}">
+      {% endif %}
     </div>
     {% endfor %}
-    <br>
-    <div class="row">
-      <!-- <input type="submit" value="Generate pcap"/>  -->
+    <div class="form-actions">
       <input type="button" value="Generate pcap" onclick="validateAndSubmit('{{ validation_field_id }}', '{{ validation_error_id }}', document.getElementById('{{ form_id }}'))">
     </div>
   </form>
 </div>
-<br/>
-<br/>
-<p>Samples</p>
+
+<p class="samples-heading">Samples</p>
 <div class="container">
   {% for sample in samples %}
   <div class="row">
