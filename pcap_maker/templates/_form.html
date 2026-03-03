@@ -18,6 +18,7 @@
     {% endfor %}
     <div class="form-actions">
       <input type="button" value="Generate pcap" onclick="validateAndSubmit('{{ validation_field_id }}', '{{ validation_error_id }}', document.getElementById('{{ form_id }}'))">
+      <button type="button" class="clear-btn" data-field="{{ validation_field_id }}">Clear</button>
     </div>
   </form>
 </div>

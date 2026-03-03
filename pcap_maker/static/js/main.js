@@ -74,6 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    document.querySelectorAll('.clear-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const field = document.getElementById(btn.dataset.field);
+            if (field) {
+                field.value = '';
+                field.dispatchEvent(new Event('input'));
+            }
+        });
+    });
+
     document.querySelectorAll('.use-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const field = document.getElementById(btn.dataset.field);
