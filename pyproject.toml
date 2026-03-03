@@ -29,6 +29,7 @@ dev = [
     "black",
     "autopep8",
     "tox",
+    "pytest-playwright",
 ]
 
 [tool.pytest.ini_options]

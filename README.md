@@ -27,6 +27,13 @@ python3 -m pcap_maker.runner
 pytest .
 ```
 
+## Playwright tests
+```
+pip install pytest-playwright
+playwright install chromium
+pytest test/test_e2e.py
+```
+
 ## Code reformatting
 
 ```

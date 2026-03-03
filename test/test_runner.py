@@ -35,7 +35,7 @@ def test_post_ethernet(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="ethernet.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="ethernet-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
@@ -48,7 +48,7 @@ def test_post_tcp(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="tcp.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="tcp-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
@@ -61,7 +61,7 @@ def test_post_udp(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="udp.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="udp-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
@@ -76,7 +76,7 @@ def test_post_sctp(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="sctp.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="sctp-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
@@ -88,7 +88,7 @@ def test_post_tcap(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="tcap.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="tcap-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
@@ -101,7 +101,7 @@ def test_post_sccp(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="sccp.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="sccp-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
@@ -115,7 +115,7 @@ def test_post_ip(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="ip.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="ip-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
@@ -128,7 +128,7 @@ def test_post_full(client):
     ))
     assert rv.status_code == 200
     assert rv.headers['Content-Type'] == 'application/cap'
-    assert rv.headers['Content-Disposition'] == 'attachment; filename="full.pcap"'
+    assert rv.headers['Content-Disposition'].startswith('attachment; filename="full-')
     pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
