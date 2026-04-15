@@ -23,8 +23,8 @@ def get_tcp_stack(
     tcp_part = dpkt.tcp.TCP(sport=tcp_src_port, dport=tcp_dest_port, data=tcp_data)
     ip_part = dpkt.ip.IP(
         src=src_ip,
-        dst=dest_ip,
-        p=dpkt.ip.IP_PROTO_TCP,
+        dst=dest_ip,            
+        p=dpkt.ip.IP_PROTO_IP,
         len=20 + len(str(tcp_part)),
         data=tcp_part,
     )

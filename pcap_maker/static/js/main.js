@@ -40,12 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         hexInput.value = formattedText.slice(0, -1);
 
-        const numberOfLines = (hexInput.value.match(/\n/g) || []).length + 1;
-        lineNumbers.innerHTML = Array.from({ length: numberOfLines }, (_, i) =>
-            `0x${(i * BYTES_PER_LINE).toString(16).padStart(8, '0')}`
-        ).join('\n');
-        
-        asciiOutput.innerHTML = asciiRepresentation.slice(0, -1);
+        if (lineNumbers) {
+            const numberOfLines = (hexInput.value.match(/\n/g) || []).length + 1;
+            lineNumbers.innerHTML = Array.from({ length: numberOfLines }, (_, i) =>
+                `0x${(i * BYTES_PER_LINE).toString(16).padStart(8, '0')}`
+            ).join('\n');
+        }
+
+        if (asciiOutput) {
+            asciiOutput.innerHTML = asciiRepresentation.slice(0, -1);
+        }
         
         const newLength = hexInput.value.length;
         const lengthDifference = newLength - originalLength;
@@ -57,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     hexInput.addEventListener('input', updateEditor);
     
     hexInput.addEventListener('scroll', () => {
-        lineNumbers.scrollTop = hexInput.scrollTop;
-        asciiOutput.scrollTop = hexInput.scrollTop;
+        if (lineNumbers) lineNumbers.scrollTop = hexInput.scrollTop;
+        if (asciiOutput) asciiOutput.scrollTop = hexInput.scrollTop;
     });
 
     if (hexInput.value) {
