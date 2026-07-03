@@ -11,6 +11,11 @@ from flask import Flask, request, make_response, render_template
 app = Flask(__name__)
 
 
+@app.errorhandler(pcap_utils.PayloadTooLargeError)
+def handle_payload_too_large(error):
+    return str(error), 400
+
+
 def make_filename(protocol, pcap_bytes):
     today = date.today().strftime('%Y%m%d')
     return f"{protocol}-{today}-{len(pcap_bytes)}.pcap"
@@ -120,8 +125,14 @@ def do_tcp_pcap():
     tcp_hex = request.form.get("tcphex")
     tcp_hex = pcap_utils.cleanup_hex(tcp_hex)
     tcp_data = binascii.a2b_hex(tcp_hex)
-    pkt = pcap_utils.get_tcp_stack(tcp_data=tcp_data, tcp_dest_port=dport)
-    pcap_obj = pcap_utils.make_pcap(pkt)
+    try:
+        pkt = pcap_utils.get_tcp_stack(tcp_data=tcp_data, tcp_dest_port=dport)
+        pcap_obj = pcap_utils.make_pcap(pkt)
+    except pcap_utils.PayloadTooLargeError:
+        # Too big for one packet - split across multiple TCP segments so
+        # Wireshark reassembles the stream instead of erroring out.
+        pkts = pcap_utils.get_tcp_stream_stack(tcp_data=tcp_data, tcp_dest_port=dport)
+        pcap_obj = pcap_utils.make_pcap_multi(pkts)
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")

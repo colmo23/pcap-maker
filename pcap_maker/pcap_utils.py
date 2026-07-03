@@ -5,12 +5,26 @@ import dpkt
 import io
 import struct
 
+IP_MAX_TOTAL_LEN = 65535
+
+
+class PayloadTooLargeError(ValueError):
+    "Raised when a packet would exceed the IPv4 max total length of 65535 bytes"
+
 
 def cleanup_hex(hex_string):
     hex_string = "".join(hex_string.split("\r\n"))
     hex_string = "".join(hex_string.split("\n"))
     hex_string = "".join(hex_string.split(" "))
     return hex_string
+
+
+def validate_ip_total_len(ip_total_len):
+    if ip_total_len > IP_MAX_TOTAL_LEN:
+        raise PayloadTooLargeError(
+            f"Payload too large: total IPv4 packet would be {ip_total_len} bytes, "
+            f"max is {IP_MAX_TOTAL_LEN} bytes"
+        )
 
 
 def get_tcp_stack(
@@ -21,11 +35,13 @@ def get_tcp_stack(
     tcp_dest_port=80,
 ):
     tcp_part = dpkt.tcp.TCP(sport=tcp_src_port, dport=tcp_dest_port, data=tcp_data)
+    ip_total_len = 20 + len(bytes(tcp_part))
+    validate_ip_total_len(ip_total_len)
     ip_part = dpkt.ip.IP(
         src=src_ip,
-        dst=dest_ip,            
-        p=dpkt.ip.IP_PROTO_IP,
-        len=20 + len(str(tcp_part)),
+        dst=dest_ip,
+        p=dpkt.ip.IP_PROTO_TCP,
+        len=ip_total_len,
         data=tcp_part,
     )
     eth_part = dpkt.ethernet.Ethernet(
@@ -36,6 +52,49 @@ def get_tcp_stack(
     return eth_part
 
 
+DEFAULT_TCP_MSS = 1460  # standard Ethernet MTU (1500) minus 20-byte IP and TCP headers
+
+
+def get_tcp_stream_stack(
+    tcp_data,
+    src_ip=b"\x0a\x0a\x0a\x0a",
+    dest_ip=b"\x0a\x0a\x0a\x10",
+    tcp_src_port=1000,
+    tcp_dest_port=80,
+    seq=0,
+    mss=DEFAULT_TCP_MSS,
+):
+    """Split tcp_data across multiple TCP segments, each its own packet.
+
+    Payloads over the single-packet IPv4 limit (65535 bytes) can't fit in one
+    frame, but a real TCP stream never puts them in one frame either - it
+    splits them into MSS-sized segments and lets the receiver reassemble the
+    stream. Wireshark does the same when it opens the resulting pcap.
+    """
+    if mss <= 0:
+        raise ValueError("mss must be positive")
+    chunks = [tcp_data[i:i + mss] for i in range(0, len(tcp_data), mss)] or [b""]
+    packets = []
+    for chunk in chunks:
+        tcp_part = dpkt.tcp.TCP(
+            sport=tcp_src_port,
+            dport=tcp_dest_port,
+            seq=seq,
+            flags=dpkt.tcp.TH_ACK | dpkt.tcp.TH_PUSH,
+            data=chunk,
+        )
+        ip_part = dpkt.ip.IP(
+            src=src_ip,
+            dst=dest_ip,
+            p=dpkt.ip.IP_PROTO_TCP,
+            len=20 + len(bytes(tcp_part)),
+            data=tcp_part,
+        )
+        packets.append(dpkt.ethernet.Ethernet(data=ip_part))
+        seq += len(chunk)
+    return packets
+
+
 def get_udp_stack(
     data,
     src_ip=b"\x0a\x0a\x0a\x0a",
@@ -44,11 +103,13 @@ def get_udp_stack(
     dest_port=80,
 ):
     l3_part = dpkt.udp.UDP(sport=src_port, dport=dest_port, ulen=8 + len(data), data=data)
+    ip_total_len = 20 + len(bytes(l3_part))
+    validate_ip_total_len(ip_total_len)
     ip_part = dpkt.ip.IP(
         src=src_ip,
         dst=dest_ip,
         p=dpkt.ip.IP_PROTO_UDP,
-        len=20 + len(str(l3_part)),
+        len=ip_total_len,
         data=l3_part,
     )
     eth_part = dpkt.ethernet.Ethernet(
@@ -81,11 +142,13 @@ def get_sctp_stack(
     l3_part = dpkt.sctp.SCTP(sport=src_port, dport=dest_port)
     l3_part.chunks = [data_chunk]
     l3_part_bytes = bytes(l3_part)
+    ip_total_len = 20 + len(l3_part_bytes)
+    validate_ip_total_len(ip_total_len)
     ip_part = dpkt.ip.IP(
         src=src_ip,
         dst=dest_ip,
         p=dpkt.ip.IP_PROTO_SCTP,
-        len=20 + len(l3_part_bytes),
+        len=ip_total_len,
         data=l3_part_bytes,
     )
     eth_part = dpkt.ethernet.Ethernet(data=ip_part)
@@ -128,11 +191,13 @@ def get_sccp_stack(data):
 
 
 def get_ip_stack(data, protocol=99):
+    ip_total_len = 20 + len(data)
+    validate_ip_total_len(ip_total_len)
     ip_part = dpkt.ip.IP(
         src=b"\x0a\x0a\x0a\x0a",
         dst=b"\x0a\x0a\x0b\x0b",
         p=protocol,
-        len=20 + len(data),
+        len=ip_total_len,
         data=data,
     )
 
@@ -157,6 +222,14 @@ def make_pcap(pkt, linktype=dpkt.pcap.DLT_EN10MB):
     fh_pcap = io.BytesIO()
     pcap_writer = dpkt.pcap.Writer(fh_pcap, linktype=linktype)
     pcap_writer.writepkt(pkt)
+    return fh_pcap.getvalue()
+
+
+def make_pcap_multi(pkts, linktype=dpkt.pcap.DLT_EN10MB):
+    fh_pcap = io.BytesIO()
+    pcap_writer = dpkt.pcap.Writer(fh_pcap, linktype=linktype)
+    for pkt in pkts:
+        pcap_writer.writepkt(pkt)
     return fh_pcap.getvalue()
 
 

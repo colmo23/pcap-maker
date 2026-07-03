@@ -54,6 +54,25 @@ def test_post_tcp(client):
     eth = dpkt.ethernet.Ethernet(buf)
     assert isinstance(eth.data.data, dpkt.tcp.TCP)
 
+def test_post_tcp_oversized_splits_into_segments(client):
+    payload = b"GET / HTTP/1.1\r\n\r\n" + b"A" * 70000
+    rv = client.post('/tcp', data=dict(
+        dport='80',
+        tcphex=payload.hex()
+    ))
+    assert rv.status_code == 200
+    assert rv.headers['Content-Type'] == 'application/cap'
+    pcap_reader = dpkt.pcap.Reader(io.BytesIO(rv.data))
+    reassembled = b""
+    packet_count = 0
+    for ts, buf in pcap_reader:
+        eth = dpkt.ethernet.Ethernet(buf)
+        assert isinstance(eth.data.data, dpkt.tcp.TCP)
+        reassembled += eth.data.data.data
+        packet_count += 1
+    assert packet_count > 1
+    assert reassembled == payload
+
 def test_post_udp(client):
     rv = client.post('/udp', data=dict(
         dport='53',

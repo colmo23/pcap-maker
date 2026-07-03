@@ -99,3 +99,26 @@ def test_make_pcap():
     ts, buf = next(pcap_reader)
     eth = dpkt.ethernet.Ethernet(buf)
     assert eth.data.data.data == b"test_data"
+
+def test_get_tcp_stack_oversized_raises():
+    with pytest.raises(pcap_utils.PayloadTooLargeError):
+        pcap_utils.get_tcp_stack(tcp_data=b"A" * 70000)
+
+def test_get_tcp_stream_stack_splits_and_preserves_data():
+    data = b"A" * 4000
+    packets = pcap_utils.get_tcp_stream_stack(tcp_data=data, mss=1460)
+    assert len(packets) == 3
+    reassembled = b"".join(pkt.data.data.data for pkt in packets)
+    assert reassembled == data
+    seqs = [pkt.data.data.seq for pkt in packets]
+    assert seqs == [0, 1460, 2920]
+
+def test_get_tcp_stream_stack_pcap_roundtrip():
+    data = b"A" * 70000
+    packets = pcap_utils.get_tcp_stream_stack(tcp_data=data)
+    pcap_data = pcap_utils.make_pcap_multi(packets)
+    pcap_reader = dpkt.pcap.Reader(io.BytesIO(pcap_data))
+    reassembled = b"".join(
+        dpkt.ethernet.Ethernet(buf).data.data.data for ts, buf in pcap_reader
+    )
+    assert reassembled == data
