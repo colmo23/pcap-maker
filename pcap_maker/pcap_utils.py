@@ -128,9 +128,9 @@ def get_sctp_stack(
     dest_port=2905,
     protocol=3,
 ):
-    # 20 IP + 12 SCTP base + 4 chunk header + 12 chunk data fields (TSN/stream/seq/proto)
-    _SCTP_OVERHEAD = 48
-    validate_ip_total_len(_SCTP_OVERHEAD + len(data))
+    # 20 IP + 12 SCTP base + 4 chunk header + 12 chunk data fields
+    sctp_overhead = 48
+    validate_ip_total_len(sctp_overhead + len(data))
     data_chunk = dpkt.sctp.Chunk(type=dpkt.sctp.DATA)
     chunk_tsn = b"\x00\x10\x20\x30"
     chunk_stream_id = b"\x00\x80"
