@@ -104,6 +104,22 @@ def test_get_tcp_stack_oversized_raises():
     with pytest.raises(pcap_utils.PayloadTooLargeError):
         pcap_utils.get_tcp_stack(tcp_data=b"A" * 70000)
 
+def test_get_udp_stack_oversized_raises():
+    # UDP: 20-byte IP + 8-byte UDP header + data; limit is 65535
+    # 65508 bytes of data pushes ip_total_len to 65536
+    with pytest.raises(pcap_utils.PayloadTooLargeError) as exc_info:
+        pcap_utils.get_udp_stack(data=b"A" * 65508)
+    assert "65535" in str(exc_info.value)
+    assert "Payload too large" in str(exc_info.value)
+
+def test_get_sctp_stack_oversized_raises():
+    # 20 IP + 12 SCTP base + 4 chunk header + 12 chunk data fields = 48 bytes overhead
+    # 65488 bytes of payload pushes ip_total_len to 65536, exceeding the limit
+    with pytest.raises(pcap_utils.PayloadTooLargeError) as exc_info:
+        pcap_utils.get_sctp_stack(data=b"A" * 65488)
+    assert "65535" in str(exc_info.value)
+    assert "Payload too large" in str(exc_info.value)
+
 def test_get_tcp_stream_stack_splits_and_preserves_data():
     data = b"A" * 4000
     packets = pcap_utils.get_tcp_stream_stack(tcp_data=data, mss=1460)

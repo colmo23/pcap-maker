@@ -73,6 +73,28 @@ def test_post_tcp_oversized_splits_into_segments(client):
     assert packet_count > 1
     assert reassembled == payload
 
+def test_post_udp_oversized_returns_400(client):
+    payload = b"A" * 65508
+    rv = client.post('/udp', data=dict(
+        dport='53',
+        udphex=payload.hex()
+    ))
+    assert rv.status_code == 400
+    assert b"Payload too large" in rv.data
+    assert b"65535" in rv.data
+
+def test_post_sctp_oversized_returns_400(client):
+    payload = b"A" * 65488
+    rv = client.post('/sctp', data=dict(
+        sport='2905',
+        dport='2905',
+        protocol='3',
+        sctphex=payload.hex()
+    ))
+    assert rv.status_code == 400
+    assert b"Payload too large" in rv.data
+    assert b"65535" in rv.data
+
 def test_post_udp(client):
     rv = client.post('/udp', data=dict(
         dport='53',
