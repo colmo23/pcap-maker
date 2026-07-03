@@ -80,6 +80,7 @@ def test_post_udp_oversized_returns_400(client):
         udphex=payload.hex()
     ))
     assert rv.status_code == 400
+    assert rv.content_type == 'text/html; charset=utf-8'
     assert b"Payload too large" in rv.data
     assert b"65535" in rv.data
 
@@ -92,6 +93,7 @@ def test_post_sctp_oversized_returns_400(client):
         sctphex=payload.hex()
     ))
     assert rv.status_code == 400
+    assert rv.content_type == 'text/html; charset=utf-8'
     assert b"Payload too large" in rv.data
     assert b"65535" in rv.data
 

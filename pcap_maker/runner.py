@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.errorhandler(pcap_utils.PayloadTooLargeError)
 def handle_payload_too_large(error):
-    return str(error), 400
+    return render_template("error.html", message=str(error)), 400
 
 
 def make_filename(protocol, pcap_bytes):
