@@ -17,8 +17,12 @@ def handle_payload_too_large(error):
 
 
 def make_filename(protocol, pcap_bytes):
-    today = date.today().strftime('%Y%m%d')
+    today = date.today().strftime("%Y%m%d")
     return f"{protocol}-{today}-{len(pcap_bytes)}.pcap"
+
+
+def make_disposition(protocol, pcap_bytes):
+    return f'attachment; filename="{make_filename(protocol, pcap_bytes)}"'
 
 
 @app.route("/")
@@ -69,7 +73,9 @@ def do_ethernet_pcap():
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("ethernet", pcap_bytes)}"')
+    response.headers.set(
+        "Content-Disposition", make_disposition("ethernet", pcap_bytes)
+    )
     return response
 
 
@@ -136,7 +142,7 @@ def do_tcp_pcap():
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("tcp", pcap_bytes)}"')
+    response.headers.set("Content-Disposition", make_disposition("tcp", pcap_bytes))
     return response
 
 
@@ -206,7 +212,7 @@ def do_udp_pcap():
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("udp", pcap_bytes)}"')
+    response.headers.set("Content-Disposition", make_disposition("udp", pcap_bytes))
     return response
 
 
@@ -306,12 +312,14 @@ def do_sctp_pcap():
     hexvalue = request.form.get("sctphex")
     hexvalue = pcap_utils.cleanup_hex(hexvalue)
     data = binascii.a2b_hex(hexvalue)
-    pkt = pcap_utils.get_sctp_stack(data=data, src_port=sport, dest_port=dport, protocol=protocol)
+    pkt = pcap_utils.get_sctp_stack(
+        data=data, src_port=sport, dest_port=dport, protocol=protocol
+    )
     pcap_obj = pcap_utils.make_pcap(pkt)
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("sctp", pcap_bytes)}"')
+    response.headers.set("Content-Disposition", make_disposition("sctp", pcap_bytes))
     return response
 
 
@@ -356,7 +364,7 @@ def do_tcap_pcap():
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("tcap", pcap_bytes)}"')
+    response.headers.set("Content-Disposition", make_disposition("tcap", pcap_bytes))
     return response
 
 
@@ -405,7 +413,7 @@ def do_sccp_pcap():
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("sccp", pcap_bytes)}"')
+    response.headers.set("Content-Disposition", make_disposition("sccp", pcap_bytes))
     return response
 
 
@@ -458,7 +466,7 @@ def do_ip_pcap():
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("ip", pcap_bytes)}"')
+    response.headers.set("Content-Disposition", make_disposition("ip", pcap_bytes))
     return response
 
 
@@ -522,7 +530,7 @@ def do_full_pcap():
     pcap_bytes = bytes(pcap_obj)
     response = make_response(pcap_bytes)
     response.headers.set("Content-type", "application/cap")
-    response.headers.set("Content-Disposition", f'attachment; filename="{make_filename("full", pcap_bytes)}"')
+    response.headers.set("Content-Disposition", make_disposition("full", pcap_bytes))
     return response
 
 

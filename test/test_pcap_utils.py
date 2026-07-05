@@ -62,7 +62,20 @@ def test_get_sctp_stack_defaults():
     assert isinstance(pkt, dpkt.ethernet.Ethernet)
     assert pkt.data.src == b"\x0a\x0a\x0a\x0a"
     assert pkt.data.dst == b"\x0a\x0a\x0a\x10"
-    sctp_pkt = pkt.data.data
+
+def test_get_sctp_stack_chunk_padding():
+    # Chunk value = 12 fixed fields + user data; must be padded to 4-byte boundary.
+    # 1-byte payload: chunk value = 13 bytes → 3 bytes of padding required.
+    pkt = pcap_utils.get_sctp_stack(data=b"A")
+    sctp_raw = pkt.data.data
+    sctp_pkt = dpkt.sctp.SCTP(sctp_raw)
+    chunk = sctp_pkt.chunks[0]
+    # Length field = 4 (header) + 13 (value) = 17; must NOT include padding.
+    assert chunk.len == 17
+    # Serialised chunk must be padded to a multiple of 4 bytes.
+    assert len(bytes(chunk)) % 4 == 0
+    # Padding bytes must be zero.
+    assert bytes(chunk)[-3:] == b"\x00\x00\x00"
 
 def test_get_sctp_stack_custom_values():
     pkt = pcap_utils.get_sctp_stack(
