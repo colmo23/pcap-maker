@@ -18,8 +18,11 @@ dependencies = [
     "Werkzeug==3.0.0",
 ]
 
+[project.scripts]
+pcap-maker = "pcap_maker.cli:main"
+
 [project.urls]
-Homepage = "https://github.com/colmo23/pcap-maker" 
+Homepage = "https://github.com/colmo23/pcap-maker"
 
 [project.optional-dependencies]
 dev = [

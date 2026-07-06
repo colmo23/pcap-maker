@@ -10,6 +10,14 @@ python3 -m pcap_maker.runner
 ```
 Serves on `localhost:8080` with debug mode enabled.
 
+**Generate a pcap from the CLI (no web server needed):**
+```bash
+python3 -m pcap_maker.cli tcap --hex "6259480349d2..." -o out.pcap
+python3 -m pcap_maker.cli tcp --file dump.hex --dport 80
+cat dump.hex | python3 -m pcap_maker.cli udp --dport 161
+```
+See the README for more examples.
+
 **Run tests:**
 ```bash
 pytest .
@@ -68,3 +76,4 @@ The app is a Flask web UI for generating PCAP files from hex packet data. Users 
 2. Add GET and POST routes in `runner.py`.
 3. Create a template `<proto>.html` that includes `_form.html` with the field list.
 4. Add the nav link in `base.html`.
+5. Add a `do_<proto>_pcap()` handler and subparser in `cli.py` so the protocol is available from the command line too.
